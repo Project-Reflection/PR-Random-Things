@@ -1,0 +1,115 @@
+plugins {
+    id 'eclipse'
+    id 'idea'
+    //id 'net.minecraftforge.gradle' version "${forge_gradle_version}"
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.4.0'
+//    id 'org.spongepowered.mixin' version "${mixin_gradle_version}"
+
+}
+
+version = mod_version
+group = mod_id
+base.archivesName = mod_name
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+
+minecraft {
+    mcVersion.set('1.12.2')
+    mcpMappingChannel.set(mappings_channel)
+    mcpMappingVersion.set(mappings_version)
+
+    username.set('InDev')
+
+    // Add any additional tweaker classes here
+    //extraTweakClasses.addAll(propertyStringList('extra_tweak_classes'))
+
+    // Add various JVM arguments here for runtime
+    def args = ['-ea:' + group]
+    args << '-Dmixin.hotSwap=true'
+    args << '-Dmixin.checks.interfaces=true'
+    args << '-Dmixin.debug.export=true'
+    extraRunJvmArguments.addAll(args)
+}
+
+repositories {
+    flatDir { dirs 'libs' }
+    maven {
+        name = "OvermindDL1 Maven"
+        url = "https://gregtech.overminddl1.com/"
+    }
+    maven {
+        name = "GTNH Maven"
+        url = "https://nexus.gtnewhorizons.com/repository/public/"
+    }
+    maven {
+        url = 'https://api.modrinth.com/maven'
+        content{
+            includeGroup 'maven.modrinth'
+        }
+    }
+    maven {
+        url = 'https://www.cursemaven.com'
+        content{
+            includeGroup 'curse.maven'
+        }
+    }
+}
+
+dependencies {
+    // minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    def mixin=modUtils.enableMixins("org.spongepowered:mixin:${mixin_version}","mixins.${mod_id}.refmap.json")
+    api (mixin) {
+        transitive = false
+    }
+    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+    implementation "io.github.llamalad7:mixinextras-common:${mixin_extras_version}"
+    annotationProcessor "io.github.llamalad7:mixinextras-common:${mixin_extras_version}"
+
+    implementation rfg.deobf("curse.maven:alternate-mixin-utilities-1328540:${twelvefold_booter_version}")
+	
+    implementation rfg.deobf("maven.modrinth:jei:${jei_version}")
+}
+
+//mixin {
+//    add sourceSets.main, "mixins.${mod_id}.refmap.json"
+//}
+
+processResources {
+    var replaceProperties = [
+            'mod_id': mod_id,
+            'mod_name': mod_name,
+            'version': mod_version,
+            'mcversion': minecraft_version,
+            'mod_description': mod_description,
+            'mod_author': mod_author
+    ]
+
+    inputs.properties replaceProperties
+
+    filesMatching('mcmod.info') {
+        expand replaceProperties
+    }
+}
+
+jar {
+    manifest {
+        def currentTasks = gradle.startParameter.taskNames
+        def forceLoadAsMod = (currentTasks[0] == 'build' || currentTasks[0] == 'prepareObfModsFolder' || currentTasks[0] == 'runObfClient')
+        attributes([
+                'Specification-Title'     : mod_name,
+                'Specification-Vendor'    : mod_author,
+                'Specification-Version'   : '1',
+                'Implementation-Title'    : mod_name,
+                'Implementation-Vendor'   : mod_author,
+                'Implementation-Version'  : mod_version,
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'FMLCorePlugin': mixin_loader_class,
+                'FMLCorePluginContainsFMLMod': 'true',
+                'ForceLoadAsMod': forceLoadAsMod,
+                'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker'
+        ])
+    }
+}
+
+jar.finalizedBy('reobfJar')
