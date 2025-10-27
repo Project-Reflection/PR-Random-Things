@@ -9,17 +9,19 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import prrandomthings.PRRandomThings;
 
+import java.util.Objects;
+
 @Mod.EventBusSubscriber(modid = PRRandomThings.MODID, value = Side.CLIENT)
 public class ClientModRegistry {
 
     @SubscribeEvent
     public static void modelRegisterEvent(ModelRegistryEvent event) {
-        registerModels(ModRegistry.exampleHelmet, ModRegistry.exampleChestplate, ModRegistry.exampleLeggings, ModRegistry.exampleBoots);
+        registerModels();//add items here
     }
 
     private static void registerModels(Item... values) {
         for(Item entry : values) {
-            ModelLoader.setCustomModelResourceLocation(entry, 0, new ModelResourceLocation(entry.getRegistryName(), "inventory"));
+            ModelLoader.setCustomModelResourceLocation(entry, 0, new ModelResourceLocation(Objects.requireNonNull(entry.getRegistryName()), "inventory"));
         }
     }
 }

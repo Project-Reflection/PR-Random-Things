@@ -12,6 +12,7 @@ import prrandomthings.proxy.CommonProxy;
 import twelvefold.twelvefoldbooter.api.LateMixinLoader;
 
 @Mod(modid = PRRandomThings.MODID, version = PRRandomThings.VERSION, name = PRRandomThings.NAME, dependencies = "required-after:twelvefoldbooter")
+@SuppressWarnings("unused")
 @LateMixinLoader(value = "mixins.prrandomthings.late.json",shouldMixinConfigQueue = "shouldMixinConfigQueue")
 public class PRRandomThings {
     public static final String MODID = "prrandomthings";
@@ -19,7 +20,7 @@ public class PRRandomThings {
     public static final String NAME = "ProjectReflection Random Things";
     public static final Logger LOGGER = LogManager.getLogger();
 	
-    @SidedProxy(clientSide = "replacememodid.proxy.ClientProxy", serverSide = "replacememodid.proxy.CommonProxy")
+    @SidedProxy(clientSide = "prrandomthings.proxy.ClientProxy", serverSide = "prrandomthings.proxy.CommonProxy")
     public static CommonProxy PROXY;
 	
 	@Instance(MODID)
