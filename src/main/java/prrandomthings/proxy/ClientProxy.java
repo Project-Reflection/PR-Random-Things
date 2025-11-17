@@ -15,10 +15,10 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void preInit() {
-//        exampleArmorModels.put(ModRegistry.exampleHelmet, exampleArmor);
-//        exampleArmorModels.put(ModRegistry.exampleChestplate, exampleArmor);
-//        exampleArmorModels.put(ModRegistry.exampleLeggings, exampleArmorLegs);
-//        exampleArmorModels.put(ModRegistry.exampleBoots, exampleArmor);
+//        exampleArmorModels.put(RegistryEvents.exampleHelmet, exampleArmor);
+//        exampleArmorModels.put(RegistryEvents.exampleChestplate, exampleArmor);
+//        exampleArmorModels.put(RegistryEvents.exampleLeggings, exampleArmorLegs);
+//        exampleArmorModels.put(RegistryEvents.exampleBoots, exampleArmor);
     }
 
     @Override

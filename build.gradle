@@ -68,7 +68,9 @@ dependencies {
 
     implementation rfg.deobf("curse.maven:alternate-mixin-utilities-1328540:${twelvefold_booter_version}")
 	
-    implementation rfg.deobf("maven.modrinth:jei:${jei_version}")
+    implementation rfg.deobf("maven.modrinth:had-enough-items:${jei_version}")
+    implementation rfg.deobf('maven.modrinth:codechicken-lib:3.2.3.358')
+    implementation rfg.deobf('maven.modrinth:gregtech-ce-unofficial:2.8.10-beta')
 }
 
 //mixin {
