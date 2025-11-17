@@ -11,9 +11,7 @@ public class PRRandomThingsPlugin implements IFMLLoadingPlugin {
 
 	public PRRandomThingsPlugin() {
 		MixinBootstrap.init();
-		//False for Vanilla/Coremod mixins, true for regular mod mixins
 		TwelvefoldRegistryAPI.enqueueEarlyMixin("mixins.prrandomthings.early.json");
-		//FermiumRegistryAPI.enqueueMixin(true, "mixins.prrandomthings.late.json", () -> Loader.isModLoaded("jei"));
 	}
 
 	@Override
