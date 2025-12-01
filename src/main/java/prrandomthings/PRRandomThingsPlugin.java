@@ -1,9 +1,11 @@
 package prrandomthings;
 
+import net.minecraftforge.fml.relauncher.FMLInjectionData;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import twelvefold.twelvefoldbooter.api.TwelvefoldRegistryAPI;
 
+import java.io.File;
 import java.util.Map;
 
 @IFMLLoadingPlugin.MCVersion("1.12.2")
@@ -12,6 +14,7 @@ public class PRRandomThingsPlugin implements IFMLLoadingPlugin {
 	public PRRandomThingsPlugin() {
 		MixinBootstrap.init();
 		TwelvefoldRegistryAPI.enqueueEarlyMixin("mixins.prrandomthings.early.json");
+        RTConstants.minecraftHome=(File) FMLInjectionData.data()[6];
 	}
 
 	@Override

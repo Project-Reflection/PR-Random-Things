@@ -19,7 +19,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
-import prrandomthings.PRConstants;
+import prrandomthings.RTConstants;
 import prrandomthings.config.RTRecipeMaps;
 
 public class MteCustomGenerator extends SimpleGeneratorMetaTileEntity {
@@ -27,13 +27,13 @@ public class MteCustomGenerator extends SimpleGeneratorMetaTileEntity {
     public static final MteCustomGenerator[] REACTANT_GENERATORS = new MteCustomGenerator[3];
     static {
         for (int i = 0; i < METALLURGIC_GENERATORS.length; i++) {
-            METALLURGIC_GENERATORS[i]=new MteCustomGenerator(new ResourceLocation(PRConstants.MODID,
+            METALLURGIC_GENERATORS[i]=new MteCustomGenerator(new ResourceLocation(RTConstants.MODID,
                     String.format("metallurgic_generator_%s",GTValues.VN[i+1].toLowerCase())),
                     RTRecipeMaps.METALLURGIC_FUELS, Textures.MULTIBLOCK_WORKABLE_OVERLAY,i+1);
         }
         for (int i = 0; i < REACTANT_GENERATORS.length; i++) {
             REACTANT_GENERATORS[i]=new MteCustomGenerator(
-                    new ResourceLocation(PRConstants.MODID,String.format("reactant_generator_%s",
+                    new ResourceLocation(RTConstants.MODID,String.format("reactant_generator_%s",
                             GTValues.VN[i+1].toLowerCase())),
                     RTRecipeMaps.REACTANT_FUELS, Textures.MULTIBLOCK_WORKABLE_OVERLAY,i+1);
         }

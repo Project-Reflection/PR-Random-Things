@@ -1,17 +1,20 @@
 plugins {
     id 'eclipse'
     id 'idea'
-    //id 'net.minecraftforge.gradle' version "${forge_gradle_version}"
     id 'com.gtnewhorizons.retrofuturagradle' version '1.4.0'
-//    id 'org.spongepowered.mixin' version "${mixin_gradle_version}"
-
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 version = mod_version
 group = mod_id
 base.archivesName = mod_name
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+        vendor=JvmVendorSpec.AZUL
+    }
+}
 
 minecraft {
     mcVersion.set('1.12.2')
@@ -53,10 +56,26 @@ repositories {
             includeGroup 'curse.maven'
         }
     }
+    maven {
+        name = 'blamejared'
+        url = 'https://maven.blamejared.com'
+    }
+    maven { // TOP
+        name 'tterrag maven'
+        url "https://maven.tterrag.com/"
+    }
 }
 
 dependencies {
     // minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    annotationProcessor 'com.github.bsideup.jabel:jabel-javac-plugin:1.0.0'
+    // Workaround for https://github.com/bsideup/jabel/issues/174
+    annotationProcessor 'net.java.dev.jna:jna-platform:5.13.0'
+    compileOnly ('com.github.bsideup.jabel:jabel-javac-plugin:1.0.0') {
+        transitive = false
+    }
+    // Allow jdk.unsupported classes like sun.misc.Unsafe, workaround for JDK-8206937 and fixes crashes in tests
+    patchedMinecraft 'me.eigenraven.java8unsupported:java-8-unsupported-shim:1.0.0'
 
     def mixin=modUtils.enableMixins("org.spongepowered:mixin:${mixin_version}","mixins.${mod_id}.refmap.json")
     api (mixin) {
@@ -71,6 +90,16 @@ dependencies {
     implementation rfg.deobf("maven.modrinth:had-enough-items:${jei_version}")
     implementation rfg.deobf('maven.modrinth:codechicken-lib:3.2.3.358')
     implementation rfg.deobf('maven.modrinth:gregtech-ce-unofficial:2.8.10-beta')
+
+    implementation rfg.deobf("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.698")
+
+//    implementation("org.mongodb:mongo-java-driver:3.2.2")
+//    shadow ("org.mongodb:mongo-java-driver:3.2.2")
+
+    implementation rfg.deobf("curse.maven:bubbles-995393:6807550")
+    implementation rfg.deobf("curse.maven:botania-1179448:6900692")
+
+    implementation rfg.deobf("maven.modrinth:the-one-probe:${top_version}")
 }
 
 //mixin {
@@ -93,7 +122,21 @@ processResources {
         expand replaceProperties
     }
 }
+tasks{
+    shadowJar {
+        configurations = [project.configurations.shadow]
+        mergeServiceFiles()
 
+//        exclude 'com/mongodb*'
+        minimize()
+
+        archiveClassifier.set('')
+    }
+
+    reobfJar {
+        inputJar.set(shadowJar.archiveFile)
+    }
+}
 jar {
     manifest {
         def currentTasks = gradle.startParameter.taskNames
@@ -113,5 +156,15 @@ jar {
         ])
     }
 }
+configure([tasks.compileJava]) {
+    sourceCompatibility = 16 // for the IDE support
+    options.release = 8
 
+    javaCompiler = javaToolchains.compilerFor {
+        languageVersion = JavaLanguageVersion.of(16)
+        vendor=JvmVendorSpec.AZUL
+    }
+}
+
+build.dependsOn(shadowJar)
 jar.finalizedBy('reobfJar')

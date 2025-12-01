@@ -7,11 +7,11 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import prrandomthings.PRConstants;
+import prrandomthings.RTConstants;
 
 import java.util.Objects;
 
-@Mod.EventBusSubscriber(modid = PRConstants.MODID, value = Side.CLIENT)
+@Mod.EventBusSubscriber(modid = RTConstants.MODID, value = Side.CLIENT)
 public class ClientEvents {
 
     @SubscribeEvent

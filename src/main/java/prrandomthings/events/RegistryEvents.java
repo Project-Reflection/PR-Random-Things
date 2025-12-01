@@ -1,7 +1,10 @@
 package prrandomthings.events;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.unification.material.event.MaterialEvent;
+import gregtech.api.unification.material.event.PostMaterialEvent;
+import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.common.metatileentities.MetaTileEntities;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
@@ -10,14 +13,15 @@ import net.minecraft.potion.PotionType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import prrandomthings.PRConstants;
+import prrandomthings.RTConstants;
 import prrandomthings.config.RTConfig;
 import prrandomthings.config.recipes.MetallurgicRecipes;
-import prrandomthings.config.recipes.RecipeTweaks;
+import prrandomthings.config.recipes.PrimitiveRecipes;
 import prrandomthings.materials.RTMaterials;
+import prrandomthings.mte.MteCustomPrimitiveMultiblock;
 import prrandomthings.mte.MteCustomGenerator;
 
-@Mod.EventBusSubscriber(modid = PRConstants.MODID)
+@Mod.EventBusSubscriber(modid = RTConstants.MODID)
 public class RegistryEvents {
 
     public static void init() {
@@ -33,7 +37,7 @@ public class RegistryEvents {
 
     @SubscribeEvent
     public static void registerRecipeEvent(RegistryEvent.Register<IRecipe> event) {
-        RecipeTweaks.register();
+        PrimitiveRecipes.register();
         MetallurgicRecipes.register();
     }
 
@@ -46,21 +50,31 @@ public class RegistryEvents {
     }
 
 
-    private static void registerMetaTileEntities(){
-        int id=RTConfig.startMetaTileEntityID;
-        for(MetaTileEntity mte:MteCustomGenerator.METALLURGIC_GENERATORS)
-        {
-            MetaTileEntities.registerMetaTileEntity(id++,mte);
+    private static void registerMetaTileEntities() {
+        int id = RTConfig.startMetaTileEntityID;
+        for (MetaTileEntity mte : MteCustomGenerator.METALLURGIC_GENERATORS) {
+            MetaTileEntities.registerMetaTileEntity(id++, mte);
         }
-        for(MetaTileEntity mte:MteCustomGenerator.REACTANT_GENERATORS)
-        {
-            MetaTileEntities.registerMetaTileEntity(id++,mte);
+        for (MetaTileEntity mte : MteCustomGenerator.REACTANT_GENERATORS) {
+            MetaTileEntities.registerMetaTileEntity(id++, mte);
         }
+        MetaTileEntities.registerMetaTileEntity(id++, MteCustomPrimitiveMultiblock.COMPOSTING_BARREL);
+        MetaTileEntities.registerMetaTileEntity(id++, MteCustomPrimitiveMultiblock.SIEVE);
     }
 
     @SubscribeEvent
-    public static void registerMaterials(MaterialEvent event)
-    {
+    public static void registerMaterials(MaterialEvent event) {
         RTMaterials.register();
+    }
+    @SubscribeEvent
+    public static void postRegisterMaterials(PostMaterialEvent event)
+    {
+        RTMaterials.postRegister();
+    }
+
+    @SubscribeEvent
+    public static void onMaterialInfo(GregTechAPI.RegisterEvent<ItemMaterialInfo> event)
+    {
+        RTMaterials.onMaterialInfo();
     }
 }

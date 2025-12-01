@@ -8,7 +8,7 @@ import prrandomthings.events.RegistryEvents;
 import prrandomthings.proxy.CommonProxy;
 import twelvefold.twelvefoldbooter.api.LateMixinLoader;
 
-@Mod(modid = PRConstants.MODID, version = PRConstants.VERSION, name = PRConstants.NAME, dependencies = "required-after:twelvefoldbooter;required-after:gregtech;")
+@Mod(modid = RTConstants.MODID, version = RTConstants.VERSION, name = RTConstants.NAME, dependencies = "required-after:twelvefoldbooter;required-after:gregtech;after:botania;")
 @SuppressWarnings("unused")
 @LateMixinLoader(value = "mixins.prrandomthings.late.json",shouldMixinConfigQueue = "shouldMixinConfigQueue")
 public class PRRandomThings {
@@ -16,7 +16,7 @@ public class PRRandomThings {
     @SidedProxy(clientSide = "prrandomthings.proxy.ClientProxy", serverSide = "prrandomthings.proxy.CommonProxy")
     public static CommonProxy PROXY;
 	
-	@Instance(PRConstants.MODID)
+	@Instance(RTConstants.MODID)
 	public static PRRandomThings instance;
 	
 	@Mod.EventHandler
