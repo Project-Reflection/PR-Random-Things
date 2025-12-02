@@ -4,10 +4,15 @@ import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.builders.PrimitiveRecipeBuilder;
+import gregtech.api.recipes.ingredients.GTRecipeFluidInput;
+import gregtech.api.recipes.ingredients.GTRecipeItemInput;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
+import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Loader;
 import prrandomthings.materials.RTMaterials;
 
 import java.util.Collection;
@@ -17,79 +22,155 @@ public final class PrimitiveRecipes {
     private static final RecipeMap<PrimitiveRecipeBuilder> PBF_RECIPES=RecipeMaps.PRIMITIVE_BLAST_FURNACE_RECIPES;
     private static final RecipeMap<PrimitiveRecipeBuilder> COMPOSTING_RECIPES= RTRecipeMaps.COMPOSTING_BARREL;
     private static final RecipeMap<PrimitiveRecipeBuilder> SIEVE_RECIPES=RTRecipeMaps.SIEVE;
+    private static final RecipeMap<PrimitiveRecipeBuilder> ROCK_RECIPES=RTRecipeMaps.STONE_BARREL;
     public static void register()
     {
         clear(PBF_RECIPES);
         PBF_RECIPES.recipeBuilder()
-                .output(OrePrefix.ingot, Materials.Steel, 1)
-                .output(OrePrefix.gem, RTMaterials.SLAG,1)
-                .input("ingotWroughtIron",1)
-                .input("dustCalcite",1)
-                .input("gemCoke",1)
-                .duration(20*60*6)
-                .buildAndRegister();
+            .output(OrePrefix.ingot, Materials.Steel, 1)
+            .output(OrePrefix.gem, RTMaterials.SLAG,1)
+            .input("ingotWroughtIron",1)
+            .input("dustCalcite",1)
+            .input("gemCoke",1)
+            .duration(20*60*6)
+            .buildAndRegister();
         PBF_RECIPES.recipeBuilder()
-                .output(OrePrefix.ingot, Materials.WroughtIron, 8)
-                .input("ingotIron",8)
-                .input("gemCharcoal",1)
-                .duration(20*10*8)
-                .buildAndRegister();
+            .output(OrePrefix.ingot, Materials.WroughtIron, 8)
+            .input("ingotIron",8)
+            .input("gemCharcoal",1)
+            .duration(20*10*8)
+            .buildAndRegister();
         //3Fe + 3SiO2 = FeSi + 2FeSiO3
         PBF_RECIPES.recipeBuilder()
-                .output(OrePrefix.ingot,RTMaterials.ELECTRICAL_STEEL,2)
-                .output(OrePrefix.gem,RTMaterials.FERROUS_SLAG,12)
-                .input("ingotSteel",3)
-                .input("dustSiliconDioxide",9)
-                .input("gemCoke")
-                .duration(20*10*3)
-                .buildAndRegister();
+            .output(OrePrefix.ingot,RTMaterials.ELECTRICAL_STEEL,2)
+            .output(OrePrefix.gem,RTMaterials.FERROUS_SLAG,12)
+            .input("ingotSteel",3)
+            .input("dustSiliconDioxide",9)
+            .input("gemCoke")
+            .duration(20*10*3)
+            .buildAndRegister();
         //5Cu + 3SiO2 = CuSi + 2Cu2SiO3
         PBF_RECIPES.recipeBuilder()
-                .output(OrePrefix.ingot,RTMaterials.SILICON_BRONZE,2)
-                .output(OrePrefix.gem,RTMaterials.CUPROUS_SLAG,14)
-                .input("ingotCopper",5)
-                .input("dustSiliconDioxide",9)
-                .input("gemCoke")
-                .duration(2*10*5)
-                .buildAndRegister();
+            .output(OrePrefix.ingot,RTMaterials.SILICON_BRONZE,2)
+            .output(OrePrefix.gem,RTMaterials.CUPROUS_SLAG,14)
+            .input("ingotCopper",5)
+            .input("dustSiliconDioxide",9)
+            .input("gemCoke")
+            .duration(2*10*5)
+            .buildAndRegister();
 
         COMPOSTING_RECIPES.recipeBuilder()
-                .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
-                .fluidOutputs(Materials.Water.getFluid(250))
-                .input("treeSapling")
-                .duration(20*10)
-                .buildAndRegister();
+            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
+            .fluidOutputs(Materials.Water.getFluid(250))
+            .input("treeSapling")
+            .duration(20*10)
+            .buildAndRegister();
         COMPOSTING_RECIPES.recipeBuilder()
-                .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
-                .fluidOutputs(Materials.Water.getFluid(250))
-                .input("treeLeaves")
-                .duration(20*10)
-                .buildAndRegister();
+            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
+            .fluidOutputs(Materials.Water.getFluid(250))
+            .input("treeLeaves")
+            .duration(20*10)
+            .buildAndRegister();
         COMPOSTING_RECIPES.recipeBuilder()
-                .output(Blocks.GRAVEL)
-                .input("dustStone",9)
-                .duration(20*10)
-                .buildAndRegister();
+            .output(Blocks.GRAVEL)
+            .input("dustStone",9)
+            .duration(20*10)
+            .buildAndRegister();
         COMPOSTING_RECIPES.recipeBuilder()
-                .output(Blocks.COBBLESTONE)
-                .input("gravel")
-                .duration(20*60)
-                .buildAndRegister();
+            .output(Items.CLAY_BALL)
+            .input("dustClay")
+            .fluidInputs(Materials.Water.getFluid(250))
+            .duration(20*10)
+            .buildAndRegister();
+        COMPOSTING_RECIPES.recipeBuilder()
+            .output(Items.CLAY_BALL)
+            .input("dustQuartzSand")
+            .fluidInputs(Materials.Water.getFluid(250))
+            .duration(20*10)
+            .buildAndRegister();
 
         SIEVE_RECIPES.recipeBuilder()
-                .output(OrePrefix.dust,Materials.Stone,2)
-                .chancedOutput(new ItemStack(Blocks.SAND),5000,0)
-                .chancedOutput(OrePrefix.dust,Materials.Clay,450,0)
-                .input(Blocks.DIRT,1)
-                .duration(20*10)
-                .buildAndRegister();
+            .output(OrePrefix.dust,Materials.Stone,2)
+            .output(MetaBlocks.RUBBER_SAPLING)
+            .chancedOutput(OrePrefix.dust,Materials.Clay,450,0)
+            .input(Blocks.DIRT,1)
+            .duration(20*10)
+            .buildAndRegister();
         SIEVE_RECIPES.recipeBuilder()
-                .output(OrePrefix.gem,Materials.Flint,3)
-                .chancedOutput(OrePrefix.gem,Materials.Flint,8800,0)
-                .chancedOutput(OrePrefix.gem,RTMaterials.UNINSPECTED,1000,0)
-                .input(Blocks.DIRT,1)
-                .duration(20*10)
+            .output(OrePrefix.gem,Materials.Flint,3)
+            .chancedOutput(OrePrefix.gem,Materials.Flint,8800,0)
+            .chancedOutput(OrePrefix.gem,RTMaterials.UNINSPECTED,1000,0)
+            .input(Blocks.GRAVEL,1)
+            .duration(20*10)
+            .buildAndRegister();
+        ROCK_RECIPES.recipeBuilder()
+            .fluidOutputs(Materials.Lava.getFluid(250))
+            .input("gravel")
+            .input(new GTRecipeItemInput(new ItemStack(Blocks.TORCH)).setNonConsumable())
+            .duration(20*10)
+            .buildAndRegister();
+        ROCK_RECIPES.recipeBuilder()
+            .notConsumable(Materials.Lava.getFluid(),1000)
+            .input(OrePrefix.dust,RTMaterials.UNINSPECTED,8)
+            .output(OrePrefix.ore,RTMaterials.UNINSPECTED)
+            .duration(20*10)
+            .buildAndRegister();
+        ROCK_RECIPES.recipeBuilder()
+            .notConsumable(Materials.Lava.getFluid(),1000)
+            .input(OrePrefix.dust,Materials.Iron,8)
+                .circuitMeta(1)
+            .output(OrePrefix.ore,Materials.Chalcopyrite)
+            .duration(20*10)
+            .buildAndRegister();
+        ROCK_RECIPES.recipeBuilder()
+            .notConsumable(Materials.Lava.getFluid(),1000)
+            .input(OrePrefix.dust,Materials.Iron,8)
+                .circuitMeta(2)
+            .output(OrePrefix.ore,Materials.Tin)
+            .duration(20*10)
+            .buildAndRegister();
+        ROCK_RECIPES.recipeBuilder()
+            .notConsumable(Materials.Lava.getFluid(),1000)
+            .input(OrePrefix.dust,Materials.Gold,8)
+                .circuitMeta(1)
+            .output(OrePrefix.ore,Materials.Galena)
+            .duration(20*10)
+            .buildAndRegister();
+        ROCK_RECIPES.recipeBuilder()
+            .notConsumable(Materials.Lava.getFluid(),1000)
+            .input(OrePrefix.dust,Materials.Gold,8)
+                .circuitMeta(2)
+            .output(OrePrefix.ore,Materials.Bauxite)
+            .duration(20*10)
+            .buildAndRegister();
+        ROCK_RECIPES.recipeBuilder()
+            .notConsumable(Materials.Lava.getFluid(),1000)
+            .input(OrePrefix.dust,Materials.Gold,16)
+            .circuitMeta(3)
+            .output(OrePrefix.ore,Materials.Pentlandite)
+            .duration(20*10)
+            .buildAndRegister();
+        if(!Loader.isModLoaded("lycanitesmobs")) {
+            ROCK_RECIPES.recipeBuilder()
+                .notConsumable(Materials.Lava.getFluid(), 1000)
+                .notConsumable(OrePrefix.ore, RTMaterials.UNINSPECTED, 16)
+                .circuitMeta(1)
+                .chancedOutput(OrePrefix.ore, Materials.Magnetite, 2, 7500, 0)
+                .chancedOutput(OrePrefix.ore, Materials.Gold, 1, 1000, 0)
+                .chancedOutput(OrePrefix.gem, Materials.NetherQuartz, 4, 7500, 0)
+                .duration(20 * 16)
                 .buildAndRegister();
+            ROCK_RECIPES.recipeBuilder()
+                .notConsumable(Materials.Lava.getFluid(), 1000)
+                .notConsumable(OrePrefix.ore, RTMaterials.UNINSPECTED, 16)
+                .notConsumable(OrePrefix.gem,Materials.Emerald,1)
+                .output(OrePrefix.gem, Materials.NetherQuartz, 8)
+                .chancedOutput(OrePrefix.gem, Materials.Diamond, 1, 500, 0)
+                .chancedOutput(OrePrefix.gem, Materials.Emerald, 1, 500, 0)
+                .chancedOutput(OrePrefix.gem, Materials.Lapis, 6, 2500, 0)
+                .duration(20 * 16)
+                .buildAndRegister();
+        }
     }
     public static void clear(RecipeMap<?> recipeMap)
     {

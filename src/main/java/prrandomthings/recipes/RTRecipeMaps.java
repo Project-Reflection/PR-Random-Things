@@ -27,4 +27,8 @@ public class RTRecipeMaps {
             2,15,1,0,new PrimitiveRecipeBuilder(),false)
             .setProgressBar(GuiTextures.PROGRESS_BAR_SIFT, ProgressWidget.MoveType.VERTICAL_DOWNWARDS)
             .setSound(SoundEvents.BLOCK_SAND_PLACE);
+    public static final RecipeMap<PrimitiveRecipeBuilder> STONE_BARREL=new RecipeMap<>("stone_barrel",
+            4,4,2,2,new PrimitiveRecipeBuilder(),false)
+            .setSmallRecipeMap(COMPOSTING_BARREL)
+            .setSound(GTSoundEvents.BATH);
 }

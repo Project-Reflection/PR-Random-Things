@@ -46,7 +46,7 @@ public class ServerEvents {
     @SubscribeEvent
     public static void onPlayerStartTracking(PlayerEvent.StartTracking event)
     {
-        if(event.getEntityPlayer() instanceof EntityPlayerMP playerMP)
+        if(event.getEntityPlayer() instanceof EntityPlayerMP playerMP && RTConfig.jumpscareInterval > 0)
         {
             JumpscareUtils.fromPlayer(playerMP).check();
         }
@@ -54,7 +54,7 @@ public class ServerEvents {
     @SubscribeEvent
     public static void onLivingTick(LivingEvent.LivingUpdateEvent event)
     {
-        if(event.getEntityLiving() instanceof EntityPlayerMP playerMP)
+        if(event.getEntityLiving() instanceof EntityPlayerMP playerMP && RTConfig.jumpscareInterval > 0)
         {
             JumpscareUtils.fromPlayer(playerMP).tick();
         }

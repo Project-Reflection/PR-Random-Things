@@ -59,6 +59,7 @@ public class RegistryEvents {
         }
         MetaTileEntities.registerMetaTileEntity(id++, RTMetaTileEntities.COMPOSTING_BARREL);
         MetaTileEntities.registerMetaTileEntity(id++, RTMetaTileEntities.SIEVE);
+        MetaTileEntities.registerMetaTileEntity(id++, RTMetaTileEntities.BRICK_BARREL);
     }
 
     @SubscribeEvent
