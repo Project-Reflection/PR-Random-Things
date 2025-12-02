@@ -7,7 +7,7 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import prrandomthings.RTConstants;
+import prrandomthings.constants.RTConstants;
 import prrandomthings.config.RTConfig;
 import prrandomthings.util.JumpscareUtils;
 //import prrandomthings.util.NBTUtils;

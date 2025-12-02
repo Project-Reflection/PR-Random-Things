@@ -1,7 +1,6 @@
-package prrandomthings;
+package prrandomthings.constants;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.gen.structure.StructureVillagePieces;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

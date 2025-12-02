@@ -1,4 +1,4 @@
-package prrandomthings.config;
+package prrandomthings.recipes;
 
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.widgets.ProgressWidget;

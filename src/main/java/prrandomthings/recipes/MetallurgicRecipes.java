@@ -1,8 +1,7 @@
-package prrandomthings.config.recipes;
+package prrandomthings.recipes;
 
 import gregtech.api.unification.material.Material;
 import gregtech.api.unification.material.Materials;
-import prrandomthings.config.RTRecipeMaps;
 
 public final class MetallurgicRecipes {
     private MetallurgicRecipes(){

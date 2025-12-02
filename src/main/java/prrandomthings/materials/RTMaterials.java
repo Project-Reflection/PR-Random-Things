@@ -12,7 +12,7 @@ import gregtech.api.unification.stack.MaterialStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
-import prrandomthings.RTConstants;
+import prrandomthings.constants.RTConstants;
 import prrandomthings.config.RTConfig;
 
 public class RTMaterials {
@@ -23,6 +23,7 @@ public class RTMaterials {
     public static Material SLAG;
     public static Material FERROUS_SLAG;
     public static Material CUPROUS_SLAG;
+    public static Material UNINSPECTED;
     //Botania
     public static Material MANASTEEEL;
     public static Material MANA_PEARL;
@@ -65,7 +66,13 @@ public class RTMaterials {
                 .iconSet(MaterialIconSet.FLINT)
                 .flags(MaterialFlags.DECOMPOSITION_BY_CENTRIFUGING)
                 .build();
-
+        UNINSPECTED=new Material.Builder(id++,RTConstants.RTID("uninspected"))
+                .color(0x808080)
+                .gem()
+                .iconSet(MaterialIconSet.DIAMOND)
+                .ore()
+                .flags(MaterialFlags.NO_SMELTING,MaterialFlags.MORTAR_GRINDABLE)
+                .build();
         //Botania
         MANASTEEEL=new Material.Builder(id++,RTConstants.RTID("manasteel"))
                 .color(0x6666ff)

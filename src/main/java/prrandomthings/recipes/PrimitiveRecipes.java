@@ -1,4 +1,4 @@
-package prrandomthings.config.recipes;
+package prrandomthings.recipes;
 
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
@@ -8,7 +8,6 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import prrandomthings.config.RTRecipeMaps;
 import prrandomthings.materials.RTMaterials;
 
 import java.util.Collection;
@@ -71,6 +70,11 @@ public final class PrimitiveRecipes {
                 .input("dustStone",9)
                 .duration(20*10)
                 .buildAndRegister();
+        COMPOSTING_RECIPES.recipeBuilder()
+                .output(Blocks.COBBLESTONE)
+                .input("gravel")
+                .duration(20*60)
+                .buildAndRegister();
 
         SIEVE_RECIPES.recipeBuilder()
                 .output(OrePrefix.dust,Materials.Stone,2)
@@ -82,7 +86,7 @@ public final class PrimitiveRecipes {
         SIEVE_RECIPES.recipeBuilder()
                 .output(OrePrefix.gem,Materials.Flint,3)
                 .chancedOutput(OrePrefix.gem,Materials.Flint,8800,0)
-                .chancedOutput(OrePrefix.dust,Materials.Clay,450,0)
+                .chancedOutput(OrePrefix.gem,RTMaterials.UNINSPECTED,1000,0)
                 .input(Blocks.DIRT,1)
                 .duration(20*10)
                 .buildAndRegister();

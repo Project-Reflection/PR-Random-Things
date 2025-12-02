@@ -10,7 +10,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import prrandomthings.RTConstants;
+import prrandomthings.constants.RTConstants;
 import prrandomthings.config.RTConfig;
 
 import java.util.*;

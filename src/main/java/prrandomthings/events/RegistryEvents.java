@@ -13,13 +13,12 @@ import net.minecraft.potion.PotionType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import prrandomthings.RTConstants;
+import prrandomthings.constants.RTConstants;
 import prrandomthings.config.RTConfig;
-import prrandomthings.config.recipes.MetallurgicRecipes;
-import prrandomthings.config.recipes.PrimitiveRecipes;
+import prrandomthings.recipes.MetallurgicRecipes;
+import prrandomthings.recipes.PrimitiveRecipes;
 import prrandomthings.materials.RTMaterials;
-import prrandomthings.mte.MteCustomPrimitiveMultiblock;
-import prrandomthings.mte.MteCustomGenerator;
+import prrandomthings.mte.RTMetaTileEntities;
 
 @Mod.EventBusSubscriber(modid = RTConstants.MODID)
 public class RegistryEvents {
@@ -52,14 +51,14 @@ public class RegistryEvents {
 
     private static void registerMetaTileEntities() {
         int id = RTConfig.startMetaTileEntityID;
-        for (MetaTileEntity mte : MteCustomGenerator.METALLURGIC_GENERATORS) {
+        for (MetaTileEntity mte : RTMetaTileEntities.METALLURGIC_GENERATORS) {
             MetaTileEntities.registerMetaTileEntity(id++, mte);
         }
-        for (MetaTileEntity mte : MteCustomGenerator.REACTANT_GENERATORS) {
+        for (MetaTileEntity mte : RTMetaTileEntities.REACTANT_GENERATORS) {
             MetaTileEntities.registerMetaTileEntity(id++, mte);
         }
-        MetaTileEntities.registerMetaTileEntity(id++, MteCustomPrimitiveMultiblock.COMPOSTING_BARREL);
-        MetaTileEntities.registerMetaTileEntity(id++, MteCustomPrimitiveMultiblock.SIEVE);
+        MetaTileEntities.registerMetaTileEntity(id++, RTMetaTileEntities.COMPOSTING_BARREL);
+        MetaTileEntities.registerMetaTileEntity(id++, RTMetaTileEntities.SIEVE);
     }
 
     @SubscribeEvent

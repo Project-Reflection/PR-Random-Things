@@ -4,6 +4,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import prrandomthings.constants.RTConstants;
 import prrandomthings.events.RegistryEvents;
 import prrandomthings.proxy.CommonProxy;
 import twelvefold.twelvefoldbooter.api.LateMixinLoader;

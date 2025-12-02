@@ -7,7 +7,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import prrandomthings.RTConstants;
+import prrandomthings.constants.RTConstants;
 
 import java.util.Objects;
 

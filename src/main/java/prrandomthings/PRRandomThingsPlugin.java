@@ -3,6 +3,7 @@ package prrandomthings;
 import net.minecraftforge.fml.relauncher.FMLInjectionData;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.spongepowered.asm.launch.MixinBootstrap;
+import prrandomthings.constants.RTConstants;
 import twelvefold.twelvefoldbooter.api.TwelvefoldRegistryAPI;
 
 import java.io.File;

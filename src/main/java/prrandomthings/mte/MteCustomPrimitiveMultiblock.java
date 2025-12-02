@@ -3,61 +3,41 @@ package prrandomthings.mte;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
+import gregtech.api.capability.IGhostSlotConfigurable;
+import gregtech.api.capability.impl.GhostCircuitItemStackHandler;
+import gregtech.api.capability.impl.ItemHandlerList;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.gui.ModularUI;
+import gregtech.api.gui.resources.TextureArea;
+import gregtech.api.gui.widgets.GhostCircuitSlotWidget;
 import gregtech.api.gui.widgets.LabelWidget;
+import gregtech.api.gui.widgets.SlotWidget;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
 import gregtech.api.metatileentity.multiblock.IMultiblockPart;
 import gregtech.api.metatileentity.multiblock.RecipeMapPrimitiveMultiblockController;
 import gregtech.api.pattern.BlockPattern;
-import gregtech.api.pattern.FactoryBlockPattern;
 import gregtech.api.pattern.TraceabilityPredicate;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.client.renderer.ICubeRenderer;
-import gregtech.client.renderer.texture.Textures;
-import gregtech.client.renderer.texture.cube.SimpleCubeRenderer;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import prrandomthings.RTConstants;
-import prrandomthings.config.RTRecipeMaps;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
+import java.util.Arrays;
 import java.util.function.Function;
 
-public class MteCustomPrimitiveMultiblock extends RecipeMapPrimitiveMultiblockController {
-    private static final ICubeRenderer WOODEN_PLANKS =new SimpleCubeRenderer("minecraft:blocks/planks_oak");
-    //region declarations
-    public static final MteCustomPrimitiveMultiblock COMPOSTING_BARREL =new MteCustomPrimitiveMultiblock(RTConstants.RTID("composting_barrel"),
-            RTRecipeMaps.COMPOSTING_BARREL,WOODEN_PLANKS,Textures.FERMENTER_OVERLAY,
-            selfPredicate->FactoryBlockPattern.start()
-            .aisle("CCC","CCC","CCC","CCC")
-            .aisle("CCC","C#C","C#C","C#C")
-            .aisle("CCC","C@C","CCC","CCC")
-            .where('C',states(Blocks.PLANKS.getDefaultState()))
-            .where('#',air())
-            .where('@',selfPredicate)
-            .build());
-    public static final MteCustomPrimitiveMultiblock SIEVE= new MteCustomPrimitiveMultiblock(RTConstants.RTID("sieve"
-    ), RTRecipeMaps.SIEVE, WOODEN_PLANKS, Textures.SIFTER_OVERLAY, selfPredicate->FactoryBlockPattern.start()
-            .aisle("C   C","C   C","CCCCC","CCCCC","CCCCC")
-            .aisle("     ","     ","CSSSC","C###C","C###C")
-            .aisle("     ","     ","CSSSC","C###C","C###C")
-            .aisle("     ","     ","CSSSC","C###C","C###C")
-            .aisle("C   C","C   C","CC@CC","CCCCC","CCCCC")
-            .where('C',states(Blocks.PLANKS.getDefaultState()))
-            .where('S',states(Blocks.WOODEN_SLAB.getDefaultState()))
-            .where(' ',any())
-            .where('#',air())
-            .where('@',selfPredicate)
-            .build());
+public class MteCustomPrimitiveMultiblock extends RecipeMapPrimitiveMultiblockController implements IGhostSlotConfigurable {
     private static final int FONT_HEIGHT = 9;
     //endregion
     private final ICubeRenderer baseTexture;
     private final ICubeRenderer overlay;
     private final Function<TraceabilityPredicate,BlockPattern> structurePattern;
+    protected GhostCircuitItemStackHandler circuitInventory;
+    private IItemHandlerModifiable actualImportItems;
 
     protected MteCustomPrimitiveMultiblock(ResourceLocation metaTileEntityId,
                                            RecipeMap<?> recipeMap,
@@ -69,7 +49,21 @@ public class MteCustomPrimitiveMultiblock extends RecipeMapPrimitiveMultiblockCo
         this.overlay = overlay;
         this.structurePattern = structurePattern;
     }
+    protected TextureArea getCircuitSlotOverlay() {
+        return GuiTextures.INT_CIRCUIT_OVERLAY;
+    }
 
+    // Method provided to override
+    protected void getCircuitSlotTooltip(SlotWidget widget) {
+        String configString;
+        if (circuitInventory == null || circuitInventory.getCircuitValue() == GhostCircuitItemStackHandler.NO_CONFIG) {
+            configString = new TextComponentTranslation("gregtech.gui.configurator_slot.no_value").getFormattedText();
+        } else {
+            configString = String.valueOf(circuitInventory.getCircuitValue());
+        }
+
+        widget.setTooltipText("gregtech.gui.configurator_slot.tooltip", configString);
+    }
     @Override
     protected ModularUI.Builder createUITemplate(EntityPlayer entityPlayer) {
         //return super.createUITemplate(entityPlayer);
@@ -80,11 +74,17 @@ public class MteCustomPrimitiveMultiblock extends RecipeMapPrimitiveMultiblockCo
                 workableRecipeMap.getMaxOutputs() >= 6 || workableRecipeMap.getMaxFluidOutputs() >= 6) {
             yOffset = FONT_HEIGHT;
         }
-        return this.recipeMapWorkable.getRecipeMap()
+        ModularUI.Builder builder= this.recipeMapWorkable.getRecipeMap()
                 .createUITemplate(recipeMapWorkable::getProgressPercent,importItems,exportItems,
                         importFluids,exportFluids,yOffset)
                 .widget(new LabelWidget(5, 5, getMetaFullName()))
                 .bindPlayerInventory(entityPlayer.inventory, GuiTextures.SLOT,yOffset);
+        if (this.circuitInventory != null && exportItems.getSlots() + exportFluids.getTanks() <= 9) {
+                SlotWidget circuitSlot = new GhostCircuitSlotWidget(circuitInventory, 0, 124, 62 + yOffset)
+                        .setBackgroundTexture(GuiTextures.SLOT, getCircuitSlotOverlay());
+                builder.widget(circuitSlot.setConsumer(this::getCircuitSlotTooltip));
+        }
+        return builder;
     }
 
     @Override
@@ -114,5 +114,42 @@ public class MteCustomPrimitiveMultiblock extends RecipeMapPrimitiveMultiblockCo
     @Override
     public boolean hasMaintenanceMechanics() {
         return false;
+    }
+
+    @Override
+    public boolean hasGhostCircuitInventory() {
+        return true;
+    }
+
+    @Override
+    public void setGhostCircuitConfig(int config) {
+        if (this.circuitInventory == null || this.circuitInventory.getCircuitValue() == config) {
+            return;
+        }
+        this.circuitInventory.setCircuitValue(config);
+        if (!getWorld().isRemote) {
+            markDirty();
+        }
+    }
+
+    @Override
+    protected void initializeInventory() {
+        super.initializeInventory();
+        if (this.hasGhostCircuitInventory()) {
+            this.circuitInventory = new GhostCircuitItemStackHandler(this);
+            this.circuitInventory.addNotifiableMetaTileEntity(this);
+        }
+
+        this.actualImportItems = null;
+    }
+
+    @Override
+    public IItemHandlerModifiable getImportItems() {
+        if (this.actualImportItems == null) {
+            this.actualImportItems = this.circuitInventory == null ?
+                    super.getImportItems() :
+                    new ItemHandlerList(Arrays.asList(super.getImportItems(), this.circuitInventory));
+        }
+        return this.actualImportItems;
     }
 }
