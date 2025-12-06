@@ -18,6 +18,7 @@ import prrandomthings.materials.RTMaterials;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public final class PrimitiveRecipes {
@@ -122,7 +123,7 @@ public final class PrimitiveRecipes {
                     .chancedOutputs(
                             IntStream.range(0,16).mapToObj(meta->new ItemStack(petal,1,meta))
                                     .map(itemStack->new ChancedItemOutput(itemStack,625,0))
-                                    .toList()
+                                    .collect(Collectors.toList())
                     )
                     .input(Blocks.DIRT,1)
                     .circuitMeta(2)
