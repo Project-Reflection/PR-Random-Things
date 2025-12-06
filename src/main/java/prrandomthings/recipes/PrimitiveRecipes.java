@@ -11,12 +11,14 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 import prrandomthings.materials.RTMaterials;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.IntStream;
 
 public final class PrimitiveRecipes {
     private PrimitiveRecipes(){}
@@ -112,6 +114,21 @@ public final class PrimitiveRecipes {
             .circuitMeta(1)
             .duration(20*10)
             .buildAndRegister();
+        if(Loader.isModLoaded("botania"))
+        {
+            Item petal=Item.getByNameOrId("botania:petal");
+            assert petal != null;
+            SIEVE_RECIPES.recipeBuilder()
+                    .chancedOutputs(
+                            IntStream.range(0,16).mapToObj(meta->new ItemStack(petal,1,meta))
+                                    .map(itemStack->new ChancedItemOutput(itemStack,625,0))
+                                    .toList()
+                    )
+                    .input(Blocks.DIRT,1)
+                    .circuitMeta(2)
+                    .duration(20*10)
+                    .buildAndRegister();
+        }
         SIEVE_RECIPES.recipeBuilder()
             .output(OrePrefix.gem,Materials.Flint,3)
             .chancedOutput(OrePrefix.gem,Materials.Flint,8800,0)
