@@ -4,7 +4,7 @@ import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.builders.PrimitiveRecipeBuilder;
-import gregtech.api.recipes.ingredients.GTRecipeFluidInput;
+import gregtech.api.recipes.chance.output.impl.ChancedItemOutput;
 import gregtech.api.recipes.ingredients.GTRecipeItemInput;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 import prrandomthings.materials.RTMaterials;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 public final class PrimitiveRecipes {
@@ -91,9 +92,24 @@ public final class PrimitiveRecipes {
 
         SIEVE_RECIPES.recipeBuilder()
             .output(OrePrefix.dust,Materials.Stone,2)
-            .output(MetaBlocks.RUBBER_SAPLING)
             .chancedOutput(OrePrefix.dust,Materials.Clay,450,0)
+            .chancedOutputs(Arrays.asList(
+                    new ChancedItemOutput(new ItemStack(Blocks.SAPLING,1,0),1000,0),
+                    new ChancedItemOutput(new ItemStack(Blocks.SAPLING,1,1),1000,0),
+                    new ChancedItemOutput(new ItemStack(Blocks.SAPLING,1,2),1000,0),
+                    new ChancedItemOutput(new ItemStack(Blocks.SAPLING,1,3),1000,0),
+                    new ChancedItemOutput(new ItemStack(Blocks.SAPLING,1,4),1000,0),
+                    new ChancedItemOutput(new ItemStack(Blocks.SAPLING,1,5),1000,0),
+                    new ChancedItemOutput(new ItemStack(MetaBlocks.RUBBER_SAPLING),1000,0)
+            ))
+            .chancedOutputs(Arrays.asList(
+                    new ChancedItemOutput(new ItemStack(Items.WHEAT_SEEDS),1000,0),
+                    new ChancedItemOutput(new ItemStack(Items.BEETROOT_SEEDS),1000,0),
+                    new ChancedItemOutput(new ItemStack(Items.MELON_SEEDS),1000,0),
+                    new ChancedItemOutput(new ItemStack(Items.PUMPKIN_SEEDS),1000,0)
+            ))
             .input(Blocks.DIRT,1)
+            .circuitMeta(1)
             .duration(20*10)
             .buildAndRegister();
         SIEVE_RECIPES.recipeBuilder()
@@ -101,6 +117,7 @@ public final class PrimitiveRecipes {
             .chancedOutput(OrePrefix.gem,Materials.Flint,8800,0)
             .chancedOutput(OrePrefix.gem,RTMaterials.UNINSPECTED,1000,0)
             .input(Blocks.GRAVEL,1)
+            .circuitMeta(1)
             .duration(20*10)
             .buildAndRegister();
         ROCK_RECIPES.recipeBuilder()
