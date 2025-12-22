@@ -47,6 +47,13 @@ public class RTMetaTileEntities {
                     .where('#', MultiblockControllerBase.air())
                     .where('@',selfPredicate)
                     .build());
+    public static final MetaTileEntity DIRT_FURNACE=new MteCustomPrimitiveMultiblock(RTConstants.RTID("dirt_furnace"),
+            RTRecipeMaps.DIRT_FURNACE,RTTextures.DIRT,Textures.ALLOY_SMELTER_OVERLAY,
+            selfPredicate->FactoryBlockPattern.start().aisle("CCC","CCC"," C ").aisle("CCC","C#C"," C ").aisle("CCC","C@C"," C ")
+                    .where('C', MultiblockControllerBase.states(Blocks.DIRT.getDefaultState()))
+                    .where('#', MultiblockControllerBase.air())
+                    .where('@',selfPredicate)
+                    .build());
     static {
         for (int i = 0; i < METALLURGIC_GENERATORS.length; i++) {
             METALLURGIC_GENERATORS[i]=new MteCustomGenerator(new ResourceLocation(RTConstants.MODID,

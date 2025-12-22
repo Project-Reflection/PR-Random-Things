@@ -21,6 +21,7 @@ import gregtech.api.pattern.TraceabilityPredicate;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.client.renderer.ICubeRenderer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -69,18 +70,18 @@ public class MteCustomPrimitiveMultiblock extends RecipeMapPrimitiveMultiblockCo
         //return super.createUITemplate(entityPlayer);
         RecipeMap<?> workableRecipeMap=this.recipeMapWorkable.getRecipeMap();
         assert workableRecipeMap != null;
-        int yOffset = 0;
-        if (workableRecipeMap.getMaxInputs() >= 6 || workableRecipeMap.getMaxFluidInputs() >= 6 ||
-                workableRecipeMap.getMaxOutputs() >= 6 || workableRecipeMap.getMaxFluidOutputs() >= 6) {
-            yOffset = FONT_HEIGHT;
-        }
+        int totalInputs=workableRecipeMap.getMaxInputs() + workableRecipeMap.getMaxFluidInputs();
+        int totalOutputs=workableRecipeMap.getMaxOutputs() + workableRecipeMap.getMaxFluidOutputs();
+        int yOffset = FONT_HEIGHT * Math.max(0,(int)Math.ceil(Math.sqrt(Math.max(totalOutputs,totalInputs)))-2);
+
         ModularUI.Builder builder= this.recipeMapWorkable.getRecipeMap()
                 .createUITemplate(recipeMapWorkable::getProgressPercent,importItems,exportItems,
                         importFluids,exportFluids,yOffset)
                 .widget(new LabelWidget(5, 5, getMetaFullName()))
-                .bindPlayerInventory(entityPlayer.inventory, GuiTextures.SLOT,yOffset);
-        if (this.circuitInventory != null && exportItems.getSlots() + exportFluids.getTanks() <= 9) {
-                SlotWidget circuitSlot = new GhostCircuitSlotWidget(circuitInventory, 0, 124, 62 + yOffset)
+                .bindPlayerInventory(entityPlayer.inventory, GuiTextures.SLOT,7+yOffset/2,84+2*yOffset);
+
+        if (this.circuitInventory != null) {
+                SlotWidget circuitSlot = new GhostCircuitSlotWidget(circuitInventory, 0, 150+yOffset/2,  64 + yOffset*2)
                         .setBackgroundTexture(GuiTextures.SLOT, getCircuitSlotOverlay());
                 builder.widget(circuitSlot.setConsumer(this::getCircuitSlotTooltip));
         }
@@ -151,5 +152,19 @@ public class MteCustomPrimitiveMultiblock extends RecipeMapPrimitiveMultiblockCo
                     new ItemHandlerList(Arrays.asList(super.getImportItems(), this.circuitInventory));
         }
         return this.actualImportItems;
+
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound data) {
+        data= super.writeToNBT(data);
+        this.circuitInventory.write(data);
+        return data;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound data) {
+        super.readFromNBT(data);
+        this.circuitInventory.read(data);
     }
 }

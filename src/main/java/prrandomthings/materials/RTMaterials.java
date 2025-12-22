@@ -134,8 +134,9 @@ public class RTMaterials {
     public static void postRegister()
     {
         if(RTConfig.enableExtraFlintTools) {
-            Materials.Flint.addFlags(MaterialFlags.GENERATE_PLATE, MaterialFlags.GENERATE_BOLT_SCREW, MaterialFlags.GENERATE_ROD);
-            Materials.Flint.getProperty(PropertyKey.TOOL).setShouldIgnoreCraftingTools(false);
+            Materials.Flint.addFlags(MaterialFlags.GENERATE_BOLT_SCREW, MaterialFlags.GENERATE_ROD);
+            Materials.Flint.getProperty(PropertyKey.TOOL)
+                    .setShouldIgnoreCraftingTools(false);
         }
         if(Loader.isModLoaded("botania")){
             ignore(OrePrefix.ingot,MANASTEEEL,TERRASTEEL,ELVEN_ELEMENTIUM);
@@ -151,7 +152,7 @@ public class RTMaterials {
     }
     public static void onMaterialInfo()
     {
-        if(Loader.isModLoaded("botania"))
+        if(RTConstants.Environment.botaniaLoaded)
         {
 
             Item manaResource=Item.getByNameOrId("botania:manaresource");

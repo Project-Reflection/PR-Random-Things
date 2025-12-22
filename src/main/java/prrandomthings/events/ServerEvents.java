@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import prrandomthings.constants.RTConstants;
 import prrandomthings.config.RTConfig;
-import prrandomthings.util.JumpscareUtils;
+import prrandomthings.jumpscare.JumpscareHandler;
 //import prrandomthings.util.NBTUtils;
 import twelvefold.twelvefoldbooter.api.misc.NBTUtils;
 import java.io.File;
@@ -48,7 +48,7 @@ public class ServerEvents {
     {
         if(event.getEntityPlayer() instanceof EntityPlayerMP playerMP && RTConfig.jumpscareInterval > 0)
         {
-            JumpscareUtils.fromPlayer(playerMP).check();
+            JumpscareHandler.fromPlayer(playerMP).check();
         }
     }
     @SubscribeEvent
@@ -56,7 +56,7 @@ public class ServerEvents {
     {
         if(event.getEntityLiving() instanceof EntityPlayerMP playerMP && RTConfig.jumpscareInterval > 0)
         {
-            JumpscareUtils.fromPlayer(playerMP).tick();
+            JumpscareHandler.fromPlayer(playerMP).tick();
         }
     }
 }

@@ -8,6 +8,7 @@ import gregtech.api.recipes.builders.PrimitiveRecipeBuilder;
 import gregtech.api.recipes.builders.SimpleRecipeBuilder;
 import gregtech.core.sound.GTSoundEvents;
 import net.minecraft.init.SoundEvents;
+import prrandomthings.recipes.recipemap.BigRecipeMap;
 
 public class RTRecipeMaps {
     public static final RecipeMap<FuelRecipeBuilder> REACTANT_FUELS=new RecipeMap<>("reactant_fuels",
@@ -23,12 +24,15 @@ public class RTRecipeMaps {
     public static final RecipeMap<PrimitiveRecipeBuilder> COMPOSTING_BARREL=new RecipeMap<>("composting_barrel",
             1,1,1,1,new PrimitiveRecipeBuilder(),false)
             .setSound(GTSoundEvents.BATH);
-    public static final RecipeMap<PrimitiveRecipeBuilder> SIEVE =new RecipeMap<>("sieve",
-            2,15,1,0,new PrimitiveRecipeBuilder(),false)
+    public static final RecipeMap<PrimitiveRecipeBuilder> SIEVE =new BigRecipeMap<>("sieve",
+            2,16,1,6,new PrimitiveRecipeBuilder(),false)
             .setProgressBar(GuiTextures.PROGRESS_BAR_SIFT, ProgressWidget.MoveType.VERTICAL_DOWNWARDS)
             .setSound(SoundEvents.BLOCK_SAND_PLACE);
     public static final RecipeMap<PrimitiveRecipeBuilder> STONE_BARREL=new RecipeMap<>("stone_barrel",
             4,4,2,2,new PrimitiveRecipeBuilder(),false)
             .setSmallRecipeMap(COMPOSTING_BARREL)
             .setSound(GTSoundEvents.BATH);
+    public static final RecipeMap<PrimitiveRecipeBuilder> DIRT_FURNACE=new RecipeMap<>("dirt_furnace",
+            3,1,0,0,
+            new PrimitiveRecipeBuilder(),false).setSound(SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE);
 }

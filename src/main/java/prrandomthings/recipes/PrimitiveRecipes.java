@@ -8,12 +8,15 @@ import gregtech.api.recipes.chance.output.impl.ChancedItemOutput;
 import gregtech.api.recipes.ingredients.GTRecipeItemInput;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
+import gregtech.common.ConfigHolder;
 import gregtech.common.blocks.MetaBlocks;
+import gregtech.common.items.MetaItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
+import prrandomthings.constants.RTConstants;
 import prrandomthings.materials.RTMaterials;
 
 import java.util.Arrays;
@@ -27,6 +30,7 @@ public final class PrimitiveRecipes {
     private static final RecipeMap<PrimitiveRecipeBuilder> COMPOSTING_RECIPES= RTRecipeMaps.COMPOSTING_BARREL;
     private static final RecipeMap<PrimitiveRecipeBuilder> SIEVE_RECIPES=RTRecipeMaps.SIEVE;
     private static final RecipeMap<PrimitiveRecipeBuilder> ROCK_RECIPES=RTRecipeMaps.STONE_BARREL;
+    private static final RecipeMap<PrimitiveRecipeBuilder> DF_RECIPES=RTRecipeMaps.DIRT_FURNACE;
     public static void register()
     {
         clear(PBF_RECIPES);
@@ -115,7 +119,7 @@ public final class PrimitiveRecipes {
             .circuitMeta(1)
             .duration(20*10)
             .buildAndRegister();
-        if(Loader.isModLoaded("botania"))
+        if(RTConstants.Environment.botaniaLoaded)
         {
             Item petal=Item.getByNameOrId("botania:petal");
             assert petal != null;
@@ -185,7 +189,7 @@ public final class PrimitiveRecipes {
             .output(OrePrefix.ore,Materials.Pentlandite)
             .duration(20*10)
             .buildAndRegister();
-        if(!Loader.isModLoaded("lycanitesmobs")) {
+        if(!RTConstants.Environment.lycaniteLoaded) {
             ROCK_RECIPES.recipeBuilder()
                 .notConsumable(Materials.Lava.getFluid(), 1000)
                 .notConsumable(OrePrefix.ore, RTMaterials.UNINSPECTED, 16)
@@ -206,6 +210,15 @@ public final class PrimitiveRecipes {
                 .duration(20 * 16)
                 .buildAndRegister();
         }
+        var clay= ConfigHolder.recipes.harderBrickRecipes? MetaItems.COMPRESSED_CLAY.getStackForm(3)
+                :new ItemStack(Items.CLAY_BALL,3);
+        DF_RECIPES.recipeBuilder()
+                .input(new GTRecipeItemInput(clay))
+                .input("plankWood",2)
+                .input("dustGunpowder")
+                .output(Items.BRICK,3)
+                .duration(60*20)
+                .buildAndRegister();
     }
     public static void clear(RecipeMap<?> recipeMap)
     {
