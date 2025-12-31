@@ -1,13 +1,7 @@
 package prrandomthings.jumpscare;
 
-import gregtech.core.sound.GTSoundEvents;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.network.play.server.SPacketChangeGameState;
 import net.minecraft.network.play.server.SPacketSoundEffect;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import prrandomthings.constants.RTConstants;

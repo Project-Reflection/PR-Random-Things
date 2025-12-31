@@ -15,7 +15,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.Loader;
 import prrandomthings.constants.RTConstants;
 import prrandomthings.materials.RTMaterials;
 
@@ -80,6 +79,13 @@ public final class PrimitiveRecipes {
             .duration(20*10)
             .buildAndRegister();
         COMPOSTING_RECIPES.recipeBuilder()
+            .output(Blocks.DIRT)
+            .fluidOutputs(Materials.Water.getFluid(2000))
+            .input(MetaItems.PLANT_BALL)
+            .duration(20*10*4)
+            .buildAndRegister();
+
+        COMPOSTING_RECIPES.recipeBuilder()
             .output(Blocks.GRAVEL)
             .input("dustStone",9)
             .duration(20*10)
@@ -119,6 +125,12 @@ public final class PrimitiveRecipes {
             .circuitMeta(1)
             .duration(20*10)
             .buildAndRegister();
+        SIEVE_RECIPES.recipeBuilder()
+            .chancedOutput(OrePrefix.dust,Materials.Clay,580,0)
+            .input(Blocks.DIRT,1)
+            .circuitMeta(2)
+            .duration(20*10)
+            .buildAndRegister();
         if(RTConstants.Environment.botaniaLoaded)
         {
             Item petal=Item.getByNameOrId("botania:petal");
@@ -130,7 +142,7 @@ public final class PrimitiveRecipes {
                                     .collect(Collectors.toList())
                     )
                     .input(Blocks.DIRT,1)
-                    .circuitMeta(2)
+                    .circuitMeta(3)
                     .duration(20*10)
                     .buildAndRegister();
         }

@@ -36,7 +36,7 @@ public class MteCustomPrimitiveMultiblock extends RecipeMapPrimitiveMultiblockCo
     //endregion
     private final ICubeRenderer baseTexture;
     private final ICubeRenderer overlay;
-    private final Function<TraceabilityPredicate,BlockPattern> structurePattern;
+    private final Function<TraceabilityPredicate,BlockPattern> structurePatternFactory;
     protected GhostCircuitItemStackHandler circuitInventory;
     private IItemHandlerModifiable actualImportItems;
 
@@ -44,11 +44,11 @@ public class MteCustomPrimitiveMultiblock extends RecipeMapPrimitiveMultiblockCo
                                            RecipeMap<?> recipeMap,
                                            ICubeRenderer baseTexture,
                                            ICubeRenderer overlay,
-                                           Function<TraceabilityPredicate,BlockPattern> structurePattern) {
+                                           Function<TraceabilityPredicate,BlockPattern> structurePatternFactory) {
         super(metaTileEntityId, recipeMap);
         this.baseTexture = baseTexture;
         this.overlay = overlay;
-        this.structurePattern = structurePattern;
+        this.structurePatternFactory = structurePatternFactory;
     }
     protected TextureArea getCircuitSlotOverlay() {
         return GuiTextures.INT_CIRCUIT_OVERLAY;
@@ -90,7 +90,7 @@ public class MteCustomPrimitiveMultiblock extends RecipeMapPrimitiveMultiblockCo
 
     @Override
     protected BlockPattern createStructurePattern() {
-        return structurePattern.apply(selfPredicate());
+        return structurePatternFactory.apply(selfPredicate());
     }
 
     @Override
@@ -105,7 +105,7 @@ public class MteCustomPrimitiveMultiblock extends RecipeMapPrimitiveMultiblockCo
     }
     @Override
     public MetaTileEntity createMetaTileEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new MteCustomPrimitiveMultiblock(this.metaTileEntityId,this.getRecipeMap(),baseTexture,overlay,structurePattern);
+        return new MteCustomPrimitiveMultiblock(this.metaTileEntityId,this.getRecipeMap(),baseTexture,overlay, structurePatternFactory);
     }
     @SideOnly(Side.CLIENT)
     @Override

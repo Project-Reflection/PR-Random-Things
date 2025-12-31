@@ -20,11 +20,23 @@ public class JumpscareEffect {
     public static final JumpscareEffect BLINDNESS=new JumpscareEffect(MobEffects.BLINDNESS);
     public static final JumpscareEffect POISON=new JumpscareEffect(MobEffects.POISON);
     public static final JumpscareEffect NAUSEA=new JumpscareEffect(MobEffects.NAUSEA);
-    public static final JumpscareEffect WITHER=new JumpscareEffect(MobEffects.WITHER,SoundEvents.ENTITY_WITHER_SPAWN);
+    public static final JumpscareEffect WITHER=new JumpscareEffect(MobEffects.WITHER,SoundEvents.ENTITY_WITHER_SPAWN)
+    {
+        @Override
+        protected void applyPotion(EntityPlayerMP playerMP, int lvl, int duration) {
+            int maxDuration=switch (lvl){
+                case 0->40*20;
+                case 1->20*20;
+                default -> 10*20;
+            };
+            super.applyPotion(playerMP, lvl, Math.min(duration,maxDuration));
+        }
+    };
     public static final JumpscareEffect HUNGER=new JumpscareEffect(MobEffects.HUNGER);
     public static final JumpscareEffect SLOWNESS=new JumpscareEffect(MobEffects.SLOWNESS);
     public static final JumpscareEffect WEAKNESS=new JumpscareEffect(MobEffects.WEAKNESS);
-    public static final JumpscareEffect GUARDIAN=new JumpscareEffect(MobEffects.MINING_FATIGUE,null){
+    public static final JumpscareEffect GUARDIAN=new JumpscareEffect(MobEffects.MINING_FATIGUE,
+            SoundEvents.ENTITY_ELDER_GUARDIAN_CURSE){
         protected void playSound(EntityPlayerMP playerMP)
         {
             playerMP.connection.sendPacket(new SPacketChangeGameState(10, 0.0F));
@@ -62,12 +74,13 @@ public class JumpscareEffect {
     protected void playSound(EntityPlayerMP playerMP)
     {
         if(sound != null) {
-            JumpscareHandler.playSoundTo(playerMP, SoundEvents.ENTITY_SPLASH_POTION_BREAK, 1.0);
+            JumpscareHandler.playSoundTo(playerMP, this.sound, 1.0);
         }
     }
     public void applyOn(EntityPlayerMP playerMP,int lvl,int duration)
     {
+        if(playerMP.world.isRemote) return;
         playSound(playerMP);
-        applyPotion(playerMP,lvl,duration);
+        applyPotion(playerMP,lvl,Math.min(duration,1));
     }
 }
