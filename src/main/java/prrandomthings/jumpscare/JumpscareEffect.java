@@ -81,6 +81,6 @@ public class JumpscareEffect {
     {
         if(playerMP.world.isRemote) return;
         playSound(playerMP);
-        applyPotion(playerMP,lvl,Math.min(duration,1));
+        applyPotion(playerMP,lvl,Math.max(duration,1));
     }
 }

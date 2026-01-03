@@ -14,8 +14,8 @@ import prrandomthings.recipes.RTRecipeMaps;
 public class RTMetaTileEntities {
     public static final MteCustomGenerator[] METALLURGIC_GENERATORS = new MteCustomGenerator[3];
     public static final MteCustomGenerator[] REACTANT_GENERATORS = new MteCustomGenerator[3];
-    public static final MteCustomPrimitiveMultiblock COMPOSTING_BARREL =new MteCustomPrimitiveMultiblock(RTConstants.RTID("composting_barrel"),
-            RTRecipeMaps.COMPOSTING_BARREL, RTTextures.WOODEN_PLANKS,Textures.FERMENTER_OVERLAY,
+    public static final MetaTileEntity COMPOSTING_BARREL =new MteCustomPrimitiveSingleblock(RTConstants.RTID("composting_barrel"),
+            RTRecipeMaps.COMPOSTING_BARREL, RTTextures.WOODEN_PLANKS,RTTextures.ITEM_COLLECTOR_OVERLAY/*,
             selfPredicate-> FactoryBlockPattern.start()
             .aisle("CCC","CCC","CCC","CCC")
             .aisle("CCC","C#C","C#C","C#C")
@@ -23,9 +23,9 @@ public class RTMetaTileEntities {
             .where('C', MultiblockControllerBase.states(Blocks.PLANKS.getDefaultState()))
             .where('#', MultiblockControllerBase.air())
             .where('@',selfPredicate)
-            .build());
-    public static final MteCustomPrimitiveMultiblock SIEVE= new MteCustomPrimitiveMultiblock(RTConstants.RTID("sieve"
-    ), RTRecipeMaps.SIEVE, RTTextures.WOODEN_PLANKS, Textures.SIFTER_OVERLAY, selfPredicate->FactoryBlockPattern.start()
+            .build()*/);
+    public static final MetaTileEntity SIEVE= new MteCustomPrimitiveSingleblock(RTConstants.RTID("sieve"
+    ), RTRecipeMaps.SIEVE, RTTextures.WOODEN_PLANKS, Textures.SIFTER_OVERLAY/*, selfPredicate->FactoryBlockPattern.start()
             .aisle("C   C","C   C","CCCCC","CCCCC","CCCCC")
             .aisle("     ","     ","CSSSC","C###C","C###C")
             .aisle("     ","     ","CSSSC","C###C","C###C")
@@ -36,9 +36,9 @@ public class RTMetaTileEntities {
             .where(' ', MultiblockControllerBase.any())
             .where('#', MultiblockControllerBase.air())
             .where('@',selfPredicate)
-            .build());
-    public static final MetaTileEntity BRICK_BARREL =new MteCustomPrimitiveMultiblock(RTConstants.RTID("brick_barrel"),
-            RTRecipeMaps.STONE_BARREL,RTTextures.BRICKS,Textures.EXTRACTOR_OVERLAY,
+            .build()*/);
+    public static final MetaTileEntity BRICK_BARREL =new MteCustomPrimitiveSingleblock(RTConstants.RTID("brick_barrel"),
+            RTRecipeMaps.STONE_BARREL,RTTextures.BRICKS,RTTextures.ITEM_COLLECTOR_OVERLAY/*,
             selfPredicate-> FactoryBlockPattern.start()
                     .aisle("CCC","CCC","CCC","CCC")
                     .aisle("CCC","C#C","C#C","C#C")
@@ -46,7 +46,7 @@ public class RTMetaTileEntities {
                     .where('C', MultiblockControllerBase.states(Blocks.BRICK_BLOCK.getDefaultState()))
                     .where('#', MultiblockControllerBase.air())
                     .where('@',selfPredicate)
-                    .build());
+                    .build()*/);
     public static final MetaTileEntity DIRT_FURNACE=new MteCustomPrimitiveMultiblock(RTConstants.RTID("dirt_furnace"),
             RTRecipeMaps.DIRT_FURNACE,RTTextures.DIRT,Textures.ALLOY_SMELTER_OVERLAY,
             selfPredicate->FactoryBlockPattern.start().aisle("CCC","CCC"," C ").aisle("CCC","C#C"," C ").aisle("CCC","C@C"," C ")
