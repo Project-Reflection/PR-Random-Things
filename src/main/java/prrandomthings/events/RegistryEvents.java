@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import prrandomthings.constants.RTConstants;
 import prrandomthings.config.RTConfig;
+import prrandomthings.items.RTMetaItem;
 import prrandomthings.recipes.CraftingRecipes;
 import prrandomthings.recipes.MetallurgicRecipes;
 import prrandomthings.recipes.PrimitiveRecipes;
@@ -32,7 +33,9 @@ public class RegistryEvents {
     public static void registerItemEvent(RegistryEvent.Register<Item> event) {
         event.getRegistry().registerAll(
                 //TODO register items here
+                RTMetaItem.META_ITEM_1
         );
+        RTMetaItem.META_ITEM_1.registerSubItems();
     }
 
     @SubscribeEvent

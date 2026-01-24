@@ -4,13 +4,16 @@ import gregtech.api.GTValues;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
 import gregtech.api.pattern.FactoryBlockPattern;
+import gregtech.api.pattern.TraceabilityPredicate;
 import gregtech.client.renderer.texture.Textures;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
+import prrandomthings.config.RTConfig;
 import prrandomthings.constants.RTConstants;
 import prrandomthings.constants.RTTextures;
 import prrandomthings.recipes.RTRecipeMaps;
 
+@SuppressWarnings("deprecation")
 public class RTMetaTileEntities {
     public static final MteCustomGenerator[] METALLURGIC_GENERATORS = new MteCustomGenerator[3];
     public static final MteCustomGenerator[] REACTANT_GENERATORS = new MteCustomGenerator[3];
@@ -47,10 +50,15 @@ public class RTMetaTileEntities {
                     .where('#', MultiblockControllerBase.air())
                     .where('@',selfPredicate)
                     .build()*/);
+
+    private static final TraceabilityPredicate primitiveFurnaceCasing = RTConfig.enableExtraFlintTools?
+            MultiblockControllerBase.states(Blocks.SANDSTONE.getStateFromMeta(2))
+            :MultiblockControllerBase.states(Blocks.DIRT.getDefaultState());
     public static final MetaTileEntity DIRT_FURNACE=new MteCustomPrimitiveMultiblock(RTConstants.RTID("dirt_furnace"),
-            RTRecipeMaps.DIRT_FURNACE,RTTextures.DIRT,Textures.ALLOY_SMELTER_OVERLAY,
+            RTRecipeMaps.DIRT_FURNACE,RTConfig.enableExtraFlintTools?
+            RTTextures.SMOOTH_SANDSTONE:RTTextures.DIRT,Textures.ALLOY_SMELTER_OVERLAY,
             selfPredicate->FactoryBlockPattern.start().aisle("CCC","CCC"," C ").aisle("CCC","C#C"," C ").aisle("CCC","C@C"," C ")
-                    .where('C', MultiblockControllerBase.states(Blocks.DIRT.getDefaultState()))
+                    .where('C', primitiveFurnaceCasing)
                     .where('#', MultiblockControllerBase.air())
                     .where('@',selfPredicate)
                     .build());

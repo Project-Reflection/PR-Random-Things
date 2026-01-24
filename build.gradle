@@ -101,6 +101,8 @@ dependencies {
     implementation rfg.deobf("curse.maven:botania-1179448:6900692")
 
     implementation rfg.deobf("maven.modrinth:the-one-probe:${top_version}")
+    implementation rfg.deobf("maven.modrinth:endercore:0.5.78")
+    implementation(rfg.deobf(files("./libs/EnderCore-1.12.2-0.5.78-core.jar")))
 }
 
 //mixin {

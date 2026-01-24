@@ -5,9 +5,7 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import gregtech.client.renderer.ICubeRenderer;
 import gregtech.client.renderer.texture.Textures;
-import gregtech.client.renderer.texture.cube.OrientedOverlayRenderer;
-import gregtech.client.renderer.texture.cube.SimpleCubeRenderer;
-import gregtech.client.renderer.texture.cube.SimpleOverlayRenderer;
+import gregtech.client.renderer.texture.cube.*;
 import net.minecraft.util.EnumFacing;
 
 public class RTTextures {
@@ -15,6 +13,7 @@ public class RTTextures {
     public static final ICubeRenderer STONE_BRICKS=new SimpleCubeRenderer("minecraft:blocks/stonebrick");
     public static final ICubeRenderer BRICKS=new SimpleCubeRenderer("minecraft:blocks/brick");
     public static final ICubeRenderer DIRT = new SimpleCubeRenderer("minecraft:blocks/dirt");
+    public static final ICubeRenderer SMOOTH_SANDSTONE=new SimpleCubeRenderer("minecraft:blocks/sandstone_top");
 
     public static final ICubeRenderer ITEM_COLLECTOR_OVERLAY=new SimpleOverlayRenderer("overlay/machine/overlay_blower"){
         @Override

@@ -65,7 +65,7 @@ public final class PrimitiveRecipes {
             .input("gemCoke")
             .duration(2*10*5)
             .buildAndRegister();
-
+        //crop composting
         COMPOSTING_RECIPES.recipeBuilder()
             .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
             .fluidOutputs(Materials.Water.getFluid(250))
@@ -79,17 +79,71 @@ public final class PrimitiveRecipes {
             .duration(20*10)
             .buildAndRegister();
         COMPOSTING_RECIPES.recipeBuilder()
+            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
+            .fluidOutputs(Materials.Water.getFluid(250))
+            .input(Items.WHEAT)
+            .duration(20*10)
+            .buildAndRegister();
+        COMPOSTING_RECIPES.recipeBuilder()
+            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
+            .fluidOutputs(Materials.Water.getFluid(250))
+            .input(Items.POTATO)
+            .duration(20*10)
+            .buildAndRegister();
+        COMPOSTING_RECIPES.recipeBuilder()
+            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
+            .fluidOutputs(Materials.Water.getFluid(250))
+            .input(Items.CARROT)
+            .duration(20*10)
+            .buildAndRegister();
+        COMPOSTING_RECIPES.recipeBuilder()
+            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
+            .fluidOutputs(Materials.Water.getFluid(250))
+            .input(Items.BEETROOT)
+            .duration(20*10)
+            .buildAndRegister();COMPOSTING_RECIPES.recipeBuilder()
+            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
+            .fluidOutputs(Materials.Water.getFluid(250))
+            .input(Items.REEDS)
+            .duration(20*10)
+            .buildAndRegister();
+        COMPOSTING_RECIPES.recipeBuilder()
+            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
+            .fluidOutputs(Materials.Water.getFluid(250))
+            .input(Blocks.CACTUS)
+            .duration(20*10)
+            .buildAndRegister();COMPOSTING_RECIPES.recipeBuilder()
+            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
+            .fluidOutputs(Materials.Water.getFluid(250))
+            .input(Blocks.BROWN_MUSHROOM)
+            .duration(20*10)
+            .buildAndRegister();
+        COMPOSTING_RECIPES.recipeBuilder()
+            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
+            .fluidOutputs(Materials.Water.getFluid(250))
+            .input(Blocks.RED_MUSHROOM)
+            .duration(20*10)
+            .buildAndRegister();
+        //special composting
+        COMPOSTING_RECIPES.recipeBuilder()
             .output(Blocks.DIRT)
             .fluidOutputs(Materials.Water.getFluid(2000))
             .input(MetaItems.PLANT_BALL)
             .duration(20*10*4)
             .buildAndRegister();
-
+        COMPOSTING_RECIPES.recipeBuilder()
+            .chancedOutput(MetaItems.PLANT_BALL,1000,0)
+            .fluidOutputs(Materials.Glue.getFluid(100))
+            .input(MetaItems.STICKY_RESIN)
+            .duration(20*20)
+            .buildAndRegister();
+        //compression
         COMPOSTING_RECIPES.recipeBuilder()
             .output(Blocks.GRAVEL)
             .input("dustStone",9)
             .duration(20*10)
             .buildAndRegister();
+        //clay making
         COMPOSTING_RECIPES.recipeBuilder()
             .output(Items.CLAY_BALL)
             .input("dustClay")

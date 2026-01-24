@@ -1,0 +1,22 @@
+prrandomthings.machine.sieve.name=Sieve
+prrandomthings.machine.composting_barrel.name=Wooden Barrel
+prrandomthings.machine.brick_barrel.name=Brick Barrel
+prrandomthings.machine.dirt_furnace.name=Primitive Kiln
+
+metaitem.error_item.name=Error Item
+metaitem.plant_fiber.name=Plant Fiber
+metaitem.plant_string.name=Plant String
+metaitem.plant_mesh.name=Plant Mesh
+metaitem.string_mesh.name=String Mesh
+
+prrandomthings.material.ferrous_slag=Ferrous Slag
+prrandomthings.material.cuprous_slag=Cuprous Slag
+prrandomthings.material.slag=Slag
+prrandomthings.material.uninspected=Uninspected
+prrandomthings.material.manasteel=Manasteel
+prrandomthings.material.mana_pearl=Mana Pearl
+prrandomthings.material.mana_diamond=Mana Diamond
+prrandomthings.material.silicon_bronze=Silicon Bronze
+prrandomthings.material.electrical_steel=Electrical Steel
+prrandomthings.material.terrasteel=Terrasteel
+prrandomthings.material.elven_elementium=Elven Elementium
