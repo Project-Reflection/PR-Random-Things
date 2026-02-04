@@ -7,6 +7,7 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.info.MaterialFlags;
 import gregtech.api.unification.material.info.MaterialIconSet;
 import gregtech.api.unification.material.properties.PropertyKey;
+import gregtech.api.unification.material.properties.ToolProperty;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
 import net.minecraft.item.Item;
@@ -68,10 +69,12 @@ public class RTMaterials {
                 .build();
         UNINSPECTED=new Material.Builder(id++,RTConstants.RTID("uninspected"))
                 .color(0x808080)
-                .gem()
+                .gem(2)
                 .iconSet(MaterialIconSet.DIAMOND)
                 .ore()
-                .flags(MaterialFlags.NO_SMELTING,MaterialFlags.MORTAR_GRINDABLE)
+                .flags(MaterialFlags.NO_SMELTING,MaterialFlags.MORTAR_GRINDABLE,MaterialFlags.GENERATE_PLATE,
+                        MaterialFlags.GENERATE_ROD,MaterialFlags.GENERATE_BOLT_SCREW)
+                .toolStats(new ToolProperty(8f,6f,256,3))
                 .build();
         //Botania
         MANASTEEEL=new Material.Builder(id++,RTConstants.RTID("manasteel"))
@@ -79,7 +82,10 @@ public class RTMaterials {
                 .components(new MaterialStack(Materials.Steel,1),new MaterialStack(MAGIC,1))
                 .ingot()
                 .iconSet(MaterialIconSet.SHINY)
-                .flags(MaterialFlags.DISABLE_DECOMPOSITION,MaterialFlags.GENERATE_PLATE)
+                .flags(MaterialFlags.DISABLE_DECOMPOSITION,MaterialFlags.GENERATE_PLATE,MaterialFlags.GENERATE_ROD,
+                        MaterialFlags.GENERATE_BOLT_SCREW)
+                .toolStats(ToolProperty.Builder.of(6.2f,2f,300,3)
+                        .enchantability(20).build())
                 .build();
         MANA_PEARL=new Material.Builder(id++,RTConstants.RTID("mana_pearl"))
                 .color(0x66ccff)
@@ -119,14 +125,21 @@ public class RTMaterials {
                         ,new MaterialStack(MANA_DIAMOND,1)
                         ,new MaterialStack(MAGIC,1))
                 .iconSet(MaterialIconSet.SHINY)
-                .flags(MaterialFlags.DISABLE_DECOMPOSITION)
+                .flags(MaterialFlags.DISABLE_DECOMPOSITION,MaterialFlags.GENERATE_PLATE,MaterialFlags.GENERATE_ROD,
+                        MaterialFlags.GENERATE_BOLT_SCREW)
+                .toolStats(ToolProperty.Builder.of(9f,3f,2300,4)
+                        .enchantability(26)
+                        .build())
                 .build();
         ELVEN_ELEMENTIUM=new Material.Builder(id++,RTConstants.RTID("elven_elementium"))
                 .ingot()
                 .color(0xff66cc)
                 .components(MANASTEEEL,2,MAGIC,1)
                 .iconSet(MaterialIconSet.SHINY)
-                .flags(MaterialFlags.DISABLE_DECOMPOSITION)
+                .flags(MaterialFlags.DISABLE_DECOMPOSITION,MaterialFlags.GENERATE_PLATE,MaterialFlags.GENERATE_ROD,
+                        MaterialFlags.GENERATE_BOLT_SCREW)
+                .toolStats(ToolProperty.Builder.of(6.2f,2f,720,3)
+                        .enchantability(20).build())
                 .build();
 
         //dealIntegration();

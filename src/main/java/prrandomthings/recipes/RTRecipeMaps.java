@@ -25,10 +25,10 @@ public class RTRecipeMaps {
             1,1,1,1,new PrimitiveRecipeBuilder(),false)
             .setSound(GTSoundEvents.BATH);
     public static final RecipeMap<PrimitiveRecipeBuilder> SIEVE =new BigRecipeMap<>("sieve",
-            2,16,1,6,new PrimitiveRecipeBuilder(),false)
+            3,16,1,6,new PrimitiveRecipeBuilder(),false)
             .setProgressBar(GuiTextures.PROGRESS_BAR_SIFT, ProgressWidget.MoveType.VERTICAL_DOWNWARDS)
             .setSound(SoundEvents.BLOCK_SAND_PLACE);
-    public static final RecipeMap<PrimitiveRecipeBuilder> STONE_BARREL=new RecipeMap<>("stone_barrel",
+    public static final RecipeMap<PrimitiveRecipeBuilder> STONE_BARREL=new BigRecipeMap<>("stone_barrel",
             4,4,2,2,new PrimitiveRecipeBuilder(),false)
             .setSmallRecipeMap(COMPOSTING_BARREL)
             .setSound(GTSoundEvents.BATH);

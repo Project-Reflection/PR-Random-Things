@@ -16,6 +16,8 @@ public class RTConfig {
     public static double jumpscareInterval=-1;
 
     public static boolean enableExtraFlintTools=true;
+    public static boolean sandstoneDirtFurnace=false;
+    public static int compostingSpeed=800;
 	@Mod.EventBusSubscriber(modid = RTConstants.MODID)
 	private static class EventHandler{
 		@SubscribeEvent

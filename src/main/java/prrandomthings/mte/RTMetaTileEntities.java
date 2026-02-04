@@ -51,11 +51,12 @@ public class RTMetaTileEntities {
                     .where('@',selfPredicate)
                     .build()*/);
 
-    private static final TraceabilityPredicate primitiveFurnaceCasing = RTConfig.enableExtraFlintTools?
+    private static final TraceabilityPredicate primitiveFurnaceCasing = RTConfig.sandstoneDirtFurnace?
             MultiblockControllerBase.states(Blocks.SANDSTONE.getStateFromMeta(2))
             :MultiblockControllerBase.states(Blocks.DIRT.getDefaultState());
+
     public static final MetaTileEntity DIRT_FURNACE=new MteCustomPrimitiveMultiblock(RTConstants.RTID("dirt_furnace"),
-            RTRecipeMaps.DIRT_FURNACE,RTConfig.enableExtraFlintTools?
+            RTRecipeMaps.DIRT_FURNACE,RTConfig.sandstoneDirtFurnace?
             RTTextures.SMOOTH_SANDSTONE:RTTextures.DIRT,Textures.ALLOY_SMELTER_OVERLAY,
             selfPredicate->FactoryBlockPattern.start().aisle("CCC","CCC"," C ").aisle("CCC","C#C"," C ").aisle("CCC","C@C"," C ")
                     .where('C', primitiveFurnaceCasing)

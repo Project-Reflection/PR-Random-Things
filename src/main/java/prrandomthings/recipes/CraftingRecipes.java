@@ -1,5 +1,6 @@
 package prrandomthings.recipes;
 
+import com.google.common.collect.Collections2;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.material.Materials;
@@ -11,7 +12,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import prrandomthings.config.RTConfig;
+import prrandomthings.items.RTMetaItem;
+import prrandomthings.materials.RTMaterials;
 import prrandomthings.mte.RTMetaTileEntities;
+
+import java.util.Collections;
 
 public class CraftingRecipes {
     private static void registerExtraFlintRecipes() {
@@ -25,7 +30,7 @@ public class CraftingRecipes {
     }
     private static Object getPrimitiveFurnaceMaterial()
     {
-        return RTConfig.enableExtraFlintTools?"sandstone":new ItemStack(Blocks.DIRT);
+        return RTConfig.sandstoneDirtFurnace?"sandstone":new ItemStack(Blocks.DIRT);
     }
     public static void registerCraftingRecipes() {
         ModHandler.addShapedRecipe("wooden_barrel", RTMetaTileEntities.COMPOSTING_BARREL.getStackForm(),
@@ -37,7 +42,7 @@ public class CraftingRecipes {
         ModHandler.addShapedRecipe("sieve", RTMetaTileEntities.SIEVE.getStackForm(),
                 "XAX", "XBX", "XCX",
                 'X', new UnificationEntry(OrePrefix.plank, Materials.Wood),
-                'A', new ItemStack(Items.STRING),
+                'A', RTMetaItem.PLANT_MESH,
                 'B', new UnificationEntry(OrePrefix.slab, Materials.Wood),
                 'C', OreDictNames.chestWood);
         ModHandler.addShapedRecipe("bricks_barrel", RTMetaTileEntities.BRICK_BARREL.getStackForm(),
@@ -50,6 +55,14 @@ public class CraftingRecipes {
                 "XXX", "BBB", "XXX",
                 'X', getPrimitiveFurnaceMaterial(),
                 'B', new UnificationEntry(OrePrefix.gem, Materials.Flint));
+        ModHandler.addShapelessRecipe("plant_string", RTMetaItem.PLANT_STRING.getStackForm(),
+                Collections.nCopies(3,RTMetaItem.PLANT_FIBER.getStackForm()).toArray());
+        ModHandler.addShapedRecipe("plant_mesh", RTMetaItem.PLANT_MESH.getStackForm(),
+                "XAX","AAA","XAX",
+                'X',"stickWood",'A',RTMetaItem.PLANT_STRING.getStackForm());
+        ModHandler.addShapedRecipe("string_mesh", RTMetaItem.STRING_MESH.getStackForm(),
+                "XAX","AAA","XAX",
+                'X',"stickWood",'A',Items.STRING.getDefaultInstance());
 
         if(RTConfig.enableExtraFlintTools)
         {

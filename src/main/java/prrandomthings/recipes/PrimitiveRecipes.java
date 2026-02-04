@@ -5,7 +5,9 @@ import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.builders.PrimitiveRecipeBuilder;
 import gregtech.api.recipes.chance.output.impl.ChancedItemOutput;
+import gregtech.api.recipes.ingredients.GTRecipeInput;
 import gregtech.api.recipes.ingredients.GTRecipeItemInput;
+import gregtech.api.recipes.ingredients.GTRecipeOreInput;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.common.ConfigHolder;
@@ -15,7 +17,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import prrandomthings.config.RTConfig;
 import prrandomthings.constants.RTConstants;
+import prrandomthings.items.RTMetaItem;
 import prrandomthings.materials.RTMaterials;
 
 import java.util.Arrays;
@@ -30,6 +34,25 @@ public final class PrimitiveRecipes {
     private static final RecipeMap<PrimitiveRecipeBuilder> SIEVE_RECIPES=RTRecipeMaps.SIEVE;
     private static final RecipeMap<PrimitiveRecipeBuilder> ROCK_RECIPES=RTRecipeMaps.STONE_BARREL;
     private static final RecipeMap<PrimitiveRecipeBuilder> DF_RECIPES=RTRecipeMaps.DIRT_FURNACE;
+    public static void addStandardCompostingRecipe(GTRecipeInput input){
+        COMPOSTING_RECIPES.recipeBuilder()
+                .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
+                .fluidOutputs(Materials.Water.getFluid(250))
+                .input(input)
+                .duration(RTConfig.compostingSpeed / 8)
+                .buildAndRegister();
+    }
+    public static void addRockMeltingRecipe(GTRecipeInput... inputs){
+        for(GTRecipeInput input:inputs)
+        {
+            ROCK_RECIPES.recipeBuilder()
+                    .fluidOutputs(Materials.Lava.getFluid(250))
+                    .input(input)
+                    .input(new GTRecipeItemInput(new ItemStack(Blocks.TORCH)).setNonConsumable())
+                    .duration(20*10)
+                    .buildAndRegister();
+        }
+    }
     public static void register()
     {
         clear(PBF_RECIPES);
@@ -66,70 +89,22 @@ public final class PrimitiveRecipes {
             .duration(2*10*5)
             .buildAndRegister();
         //crop composting
-        COMPOSTING_RECIPES.recipeBuilder()
-            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
-            .fluidOutputs(Materials.Water.getFluid(250))
-            .input("treeSapling")
-            .duration(20*10)
-            .buildAndRegister();
-        COMPOSTING_RECIPES.recipeBuilder()
-            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
-            .fluidOutputs(Materials.Water.getFluid(250))
-            .input("treeLeaves")
-            .duration(20*10)
-            .buildAndRegister();
-        COMPOSTING_RECIPES.recipeBuilder()
-            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
-            .fluidOutputs(Materials.Water.getFluid(250))
-            .input(Items.WHEAT)
-            .duration(20*10)
-            .buildAndRegister();
-        COMPOSTING_RECIPES.recipeBuilder()
-            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
-            .fluidOutputs(Materials.Water.getFluid(250))
-            .input(Items.POTATO)
-            .duration(20*10)
-            .buildAndRegister();
-        COMPOSTING_RECIPES.recipeBuilder()
-            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
-            .fluidOutputs(Materials.Water.getFluid(250))
-            .input(Items.CARROT)
-            .duration(20*10)
-            .buildAndRegister();
-        COMPOSTING_RECIPES.recipeBuilder()
-            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
-            .fluidOutputs(Materials.Water.getFluid(250))
-            .input(Items.BEETROOT)
-            .duration(20*10)
-            .buildAndRegister();COMPOSTING_RECIPES.recipeBuilder()
-            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
-            .fluidOutputs(Materials.Water.getFluid(250))
-            .input(Items.REEDS)
-            .duration(20*10)
-            .buildAndRegister();
-        COMPOSTING_RECIPES.recipeBuilder()
-            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
-            .fluidOutputs(Materials.Water.getFluid(250))
-            .input(Blocks.CACTUS)
-            .duration(20*10)
-            .buildAndRegister();COMPOSTING_RECIPES.recipeBuilder()
-            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
-            .fluidOutputs(Materials.Water.getFluid(250))
-            .input(Blocks.BROWN_MUSHROOM)
-            .duration(20*10)
-            .buildAndRegister();
-        COMPOSTING_RECIPES.recipeBuilder()
-            .chancedOutput(new ItemStack(Blocks.DIRT),1250,0)
-            .fluidOutputs(Materials.Water.getFluid(250))
-            .input(Blocks.RED_MUSHROOM)
-            .duration(20*10)
-            .buildAndRegister();
+        addStandardCompostingRecipe(new GTRecipeOreInput("treeSapling"));
+        addStandardCompostingRecipe(new GTRecipeOreInput("treeLeaves"));
+        addStandardCompostingRecipe(new GTRecipeItemInput(new ItemStack(Items.WHEAT)));
+        addStandardCompostingRecipe(new GTRecipeItemInput(new ItemStack(Items.POTATO)));
+        addStandardCompostingRecipe(new GTRecipeItemInput(new ItemStack(Items.CARROT)));
+        addStandardCompostingRecipe(new GTRecipeItemInput(new ItemStack(Items.BEETROOT)));
+        addStandardCompostingRecipe(new GTRecipeItemInput(new ItemStack(Items.REEDS)));
+        addStandardCompostingRecipe(new GTRecipeItemInput(new ItemStack(Blocks.CACTUS)));
+        addStandardCompostingRecipe(new GTRecipeItemInput(new ItemStack(Blocks.BROWN_MUSHROOM)));
+        addStandardCompostingRecipe(new GTRecipeItemInput(new ItemStack(Blocks.RED_MUSHROOM)));
         //special composting
         COMPOSTING_RECIPES.recipeBuilder()
             .output(Blocks.DIRT)
             .fluidOutputs(Materials.Water.getFluid(2000))
             .input(MetaItems.PLANT_BALL)
-            .duration(20*10*4)
+            .duration(RTConfig.compostingSpeed / 2)
             .buildAndRegister();
         COMPOSTING_RECIPES.recipeBuilder()
             .chancedOutput(MetaItems.PLANT_BALL,1000,0)
@@ -156,67 +131,94 @@ public final class PrimitiveRecipes {
             .fluidInputs(Materials.Water.getFluid(250))
             .duration(20*10)
             .buildAndRegister();
-
-        SIEVE_RECIPES.recipeBuilder()
-            .output(OrePrefix.dust,Materials.Stone,2)
-            .chancedOutput(OrePrefix.dust,Materials.Clay,450,0)
-            .chancedOutputs(Arrays.asList(
-                    new ChancedItemOutput(new ItemStack(Blocks.SAPLING,1,0),1000,0),
-                    new ChancedItemOutput(new ItemStack(Blocks.SAPLING,1,1),1000,0),
-                    new ChancedItemOutput(new ItemStack(Blocks.SAPLING,1,2),1000,0),
-                    new ChancedItemOutput(new ItemStack(Blocks.SAPLING,1,3),1000,0),
-                    new ChancedItemOutput(new ItemStack(Blocks.SAPLING,1,4),1000,0),
-                    new ChancedItemOutput(new ItemStack(Blocks.SAPLING,1,5),1000,0),
-                    new ChancedItemOutput(new ItemStack(MetaBlocks.RUBBER_SAPLING),1000,0)
-            ))
-            .chancedOutputs(Arrays.asList(
-                    new ChancedItemOutput(new ItemStack(Items.WHEAT_SEEDS),1000,0),
-                    new ChancedItemOutput(new ItemStack(Items.BEETROOT_SEEDS),1000,0),
-                    new ChancedItemOutput(new ItemStack(Items.MELON_SEEDS),1000,0),
-                    new ChancedItemOutput(new ItemStack(Items.PUMPKIN_SEEDS),1000,0)
-            ))
-            .input(Blocks.DIRT,1)
-            .circuitMeta(1)
-            .duration(20*10)
-            .buildAndRegister();
-        SIEVE_RECIPES.recipeBuilder()
-            .chancedOutput(OrePrefix.dust,Materials.Clay,580,0)
-            .input(Blocks.DIRT,1)
-            .circuitMeta(2)
-            .duration(20*10)
-            .buildAndRegister();
-        if(RTConstants.Environment.botaniaLoaded)
-        {
-            Item petal=Item.getByNameOrId("botania:petal");
-            assert petal != null;
+        for(ItemStack mesh :new ItemStack[]{
+                RTMetaItem.PLANT_MESH.getStackForm(),
+                RTMetaItem.STRING_MESH.getStackForm()
+        }) {
             SIEVE_RECIPES.recipeBuilder()
+                    .output(OrePrefix.dust, Materials.Stone, 4)
+                    .chancedOutput(OrePrefix.dust, Materials.Stone, 5000, 0)
+                    .chancedOutput(OrePrefix.dust, Materials.Clay, 450, 0)
+                    .chancedOutputs(Arrays.asList(
+                            new ChancedItemOutput(new ItemStack(Blocks.SAPLING, 1, 0), 1000, 0),
+                            new ChancedItemOutput(new ItemStack(Blocks.SAPLING, 1, 1), 1000, 0),
+                            new ChancedItemOutput(new ItemStack(Blocks.SAPLING, 1, 2), 1000, 0),
+                            new ChancedItemOutput(new ItemStack(Blocks.SAPLING, 1, 3), 1000, 0),
+                            new ChancedItemOutput(new ItemStack(Blocks.SAPLING, 1, 4), 1000, 0),
+                            new ChancedItemOutput(new ItemStack(Blocks.SAPLING, 1, 5), 1000, 0),
+                            new ChancedItemOutput(new ItemStack(MetaBlocks.RUBBER_SAPLING), 1000, 0)
+                    ))
+                    .chancedOutputs(Arrays.asList(
+                            new ChancedItemOutput(new ItemStack(Items.WHEAT_SEEDS), 1000, 0),
+                            new ChancedItemOutput(new ItemStack(Items.BEETROOT_SEEDS), 1000, 0),
+                            new ChancedItemOutput(new ItemStack(Items.MELON_SEEDS), 1000, 0),
+                            new ChancedItemOutput(new ItemStack(Items.PUMPKIN_SEEDS), 1000, 0)
+                    ))
+                    .input(Blocks.DIRT, 1)
+                    .input(new GTRecipeItemInput(mesh).setNonConsumable())
+                    .circuitMeta(1)
+                    .duration(20 * 10)
+                    .buildAndRegister();
+            SIEVE_RECIPES.recipeBuilder()
+                    .chancedOutput(OrePrefix.dust, Materials.Clay, 900, 0)
+                    .chancedOutput(MetaItems.PLANT_BALL,1250,0)
+                    .input(Blocks.DIRT, 1)
+                    .input(new GTRecipeItemInput(mesh).setNonConsumable())
+                    .circuitMeta(2)
+                    .duration(20 * 15)
+                    .buildAndRegister();
+            SIEVE_RECIPES.recipeBuilder()
+                    .input(new GTRecipeItemInput(mesh).setNonConsumable())
+                    .output(OrePrefix.gem, Materials.Flint, 3)
+                    .chancedOutput(OrePrefix.gem, Materials.Flint, 8800, 0)
+                    .chancedOutput(OrePrefix.gem, RTMaterials.UNINSPECTED, 1000, 0)
+                    .input(Blocks.GRAVEL, 1)
+                    .circuitMeta(1)
+                    .duration(20 * 10)
+                    .buildAndRegister();
+            if (RTConstants.Environment.botaniaLoaded) {
+                Item petal = Item.getByNameOrId("botania:petal");
+                assert petal != null;
+                SIEVE_RECIPES.recipeBuilder()
+                    .input(new GTRecipeItemInput(mesh).setNonConsumable())
                     .chancedOutputs(
-                            IntStream.range(0,16).mapToObj(meta->new ItemStack(petal,1,meta))
-                                    .map(itemStack->new ChancedItemOutput(itemStack,625,0))
+                            IntStream.range(0, 16).mapToObj(meta -> new ItemStack(petal, 1, meta))
+                                    .map(itemStack -> new ChancedItemOutput(itemStack, 625, 0))
                                     .collect(Collectors.toList())
                     )
-                    .input(Blocks.DIRT,1)
+                    .input(Blocks.DIRT, 1)
                     .circuitMeta(3)
-                    .duration(20*10)
+                    .duration(20 * 10)
                     .buildAndRegister();
+            }
         }
-        SIEVE_RECIPES.recipeBuilder()
-            .output(OrePrefix.gem,Materials.Flint,3)
-            .chancedOutput(OrePrefix.gem,Materials.Flint,8800,0)
-            .chancedOutput(OrePrefix.gem,RTMaterials.UNINSPECTED,1000,0)
-            .input(Blocks.GRAVEL,1)
-            .circuitMeta(1)
-            .duration(20*10)
-            .buildAndRegister();
+        //rock melting
+        addRockMeltingRecipe(new GTRecipeOreInput("gravel"),
+                new GTRecipeOreInput("cobblestone"),
+                new GTRecipeOreInput("stoneGranite"),
+                new GTRecipeOreInput("stoneDiorite"),
+                new GTRecipeOreInput("stoneAndesite"),
+                new GTRecipeOreInput("stone")
+                );
+
         ROCK_RECIPES.recipeBuilder()
-            .fluidOutputs(Materials.Lava.getFluid(250))
-            .input("gravel")
-            .input(new GTRecipeItemInput(new ItemStack(Blocks.TORCH)).setNonConsumable())
+                .notConsumable(Materials.Lava.getFluid(),1000)
+                .notConsumable(Materials.Water.getFluid(),1000)
+                .circuitMeta(1)
+                .output(Blocks.COBBLESTONE)
+                .duration(20)
+                .buildAndRegister();
+        ROCK_RECIPES.recipeBuilder()
+            .notConsumable(Materials.Lava.getFluid(),1000)
+            .input(OrePrefix.dust,RTMaterials.UNINSPECTED,8)
+            .output(OrePrefix.ore,RTMaterials.UNINSPECTED)
+            .circuitMeta(2)
             .duration(20*10)
             .buildAndRegister();
         ROCK_RECIPES.recipeBuilder()
             .notConsumable(Materials.Lava.getFluid(),1000)
-            .input(OrePrefix.dust,RTMaterials.UNINSPECTED,8)
+            .input(OrePrefix.dust,Materials.Flint,8)
+            .input(OrePrefix.dust,RTMaterials.UNINSPECTED)
             .output(OrePrefix.ore,RTMaterials.UNINSPECTED)
             .duration(20*10)
             .buildAndRegister();
