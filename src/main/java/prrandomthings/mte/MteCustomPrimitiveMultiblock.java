@@ -34,9 +34,9 @@ import java.util.function.Function;
 public class MteCustomPrimitiveMultiblock extends RecipeMapPrimitiveMultiblockController implements IGhostSlotConfigurable {
     private static final int FONT_HEIGHT = 9;
     //endregion
-    private final ICubeRenderer baseTexture;
-    private final ICubeRenderer overlay;
-    private final Function<TraceabilityPredicate,BlockPattern> structurePatternFactory;
+    protected final ICubeRenderer baseTexture;
+    protected final ICubeRenderer overlay;
+    protected final Function<TraceabilityPredicate,BlockPattern> structurePatternFactory;
     protected GhostCircuitItemStackHandler circuitInventory;
     private IItemHandlerModifiable actualImportItems;
 

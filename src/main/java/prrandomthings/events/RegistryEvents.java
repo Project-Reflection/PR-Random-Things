@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import prrandomthings.constants.RTConstants;
 import prrandomthings.config.RTConfig;
 import prrandomthings.items.RTMetaItem;
+import prrandomthings.mte.multiblock.MteHeater;
 import prrandomthings.recipes.CraftingRecipes;
 import prrandomthings.recipes.MetallurgicRecipes;
 import prrandomthings.recipes.PrimitiveRecipes;
@@ -67,6 +68,7 @@ public class RegistryEvents {
         MetaTileEntities.registerMetaTileEntity(id++, RTMetaTileEntities.SIEVE);
         MetaTileEntities.registerMetaTileEntity(id++, RTMetaTileEntities.BRICK_BARREL);
         MetaTileEntities.registerMetaTileEntity(id++, RTMetaTileEntities.DIRT_FURNACE);
+        MetaTileEntities.registerMetaTileEntity(id++, MteHeater.SAMPLE);
     }
 
     @SubscribeEvent

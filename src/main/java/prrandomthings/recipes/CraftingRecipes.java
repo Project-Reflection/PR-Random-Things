@@ -3,6 +3,7 @@ package prrandomthings.recipes;
 import com.google.common.collect.Collections2;
 import gregtech.api.items.OreDictNames;
 import gregtech.api.recipes.ModHandler;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
@@ -63,7 +64,9 @@ public class CraftingRecipes {
         ModHandler.addShapedRecipe("string_mesh", RTMetaItem.STRING_MESH.getStackForm(),
                 "XAX","AAA","XAX",
                 'X',"stickWood",'A',Items.STRING.getDefaultInstance());
-
+        ModHandler.addShapedRecipe("uninspected_plate", OreDictUnifier.get(OrePrefix.plate,RTMaterials.UNINSPECTED),
+                "h","X","X",
+                'X',new UnificationEntry(OrePrefix.gem,RTMaterials.UNINSPECTED));
         if(RTConfig.enableExtraFlintTools)
         {
             registerExtraFlintRecipes();

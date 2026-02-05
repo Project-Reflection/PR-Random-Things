@@ -279,13 +279,11 @@ public final class PrimitiveRecipes {
                 .buildAndRegister();
         }
         var clay= ConfigHolder.recipes.harderBrickRecipes? MetaItems.COMPRESSED_CLAY.getStackForm(3)
-                :new ItemStack(Items.CLAY_BALL,3);
+                :new ItemStack(Items.CLAY_BALL,1);
         DF_RECIPES.recipeBuilder()
                 .input(new GTRecipeItemInput(clay))
-                .input("plankWood",2)
-                .input("dustGunpowder")
-                .output(Items.BRICK,3)
-                .duration(60*20)
+                .output(Items.BRICK,1)
+                .duration(20*20)
                 .buildAndRegister();
     }
     public static void clear(RecipeMap<?> recipeMap)
