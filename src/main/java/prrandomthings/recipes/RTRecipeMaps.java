@@ -32,6 +32,10 @@ public class RTRecipeMaps {
             4,4,2,2,new PrimitiveRecipeBuilder(),false)
             .setSmallRecipeMap(COMPOSTING_BARREL)
             .setSound(GTSoundEvents.BATH);
+    public static final RecipeMap<PrimitiveRecipeBuilder> CRUCIBLE=new BigRecipeMap<>("crucible",
+            4,4,2,2,new PrimitiveRecipeBuilder(),false)
+            //.setSmallRecipeMap(COMPOSTING_BARREL)
+            .setSound(GTSoundEvents.COMPRESSOR);
     public static final RecipeMap<PrimitiveRecipeBuilder> DIRT_FURNACE=new RecipeMap<>("dirt_furnace",
             3,1,0,0,
             new PrimitiveRecipeBuilder(),false).setSound(SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE);

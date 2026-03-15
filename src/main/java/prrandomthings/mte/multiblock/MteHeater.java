@@ -14,6 +14,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
 import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
+import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
 import gregtech.client.renderer.ICubeRenderer;
 import gregtech.client.renderer.texture.Textures;
 import gregtech.common.metatileentities.multi.multiblockpart.MetaTileEntityMultiblockPart;
@@ -34,7 +35,8 @@ import prrandomthings.constants.RTTextures;
 
 import java.util.List;
 
-public class MteHeater extends MetaTileEntityMultiblockPart implements IControllable, IMultiblockAbilityPart<IHeater>,IHeater {
+public class MteHeater extends MetaTileEntityMultiblockPart implements IControllable,
+        IMultiblockAbilityPart<IHeater>,IHeater {
     public static final MteHeater SAMPLE = new MteHeater();
 
     private int fuelBurnTimeLeft;
@@ -74,8 +76,6 @@ public class MteHeater extends MetaTileEntityMultiblockPart implements IControll
     public boolean isValidFrontFacing(EnumFacing facing) {
         return facing != EnumFacing.UP && facing != EnumFacing.DOWN;
     }
-
-
 
     @Override
     public boolean isActive() {
@@ -118,7 +118,14 @@ public class MteHeater extends MetaTileEntityMultiblockPart implements IControll
 
     @Override
     public ICubeRenderer getBaseTexture() {
-        return RTTextures.SMOOTH_SANDSTONE;
+        MultiblockControllerBase controller = this.getController();
+        if (controller != null) {
+            return this.hatchTexture = controller.getBaseTexture(this);
+        } else if (this.hatchTexture != null) {
+            return this.hatchTexture != Textures.getInactiveTexture(this.hatchTexture) ? (this.hatchTexture = Textures.getInactiveTexture(this.hatchTexture)) : this.hatchTexture;
+        } else {
+            return RTTextures.SMOOTH_SANDSTONE;
+        }
     }
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {

@@ -16,6 +16,7 @@ import prrandomthings.config.RTConfig;
 import prrandomthings.items.RTMetaItem;
 import prrandomthings.materials.RTMaterials;
 import prrandomthings.mte.RTMetaTileEntities;
+import prrandomthings.mte.multiblock.MteHeater;
 
 import java.util.Collections;
 
@@ -29,10 +30,8 @@ public class CraftingRecipes {
                 'I', flint,
                 'S', stick);
     }
-    private static Object getPrimitiveFurnaceMaterial()
-    {
-        return RTConfig.sandstoneDirtFurnace?"sandstone":new ItemStack(Blocks.DIRT);
-    }
+
+
     public static void registerCraftingRecipes() {
         ModHandler.addShapedRecipe("wooden_barrel", RTMetaTileEntities.COMPOSTING_BARREL.getStackForm(),
                 "XAX", "XBX", "XCX",
@@ -52,10 +51,22 @@ public class CraftingRecipes {
                 'A', new ItemStack(Items.BOWL),
                 'B', new ItemStack(Blocks.STONE_SLAB, 1, 4),
                 'C', OreDictNames.chestWood);
+        ModHandler.addShapedRecipe("bricks_crucible", RTMetaTileEntities.CRUCIBLE.getStackForm(),
+                "XAX", "XBX", "XCX",
+                'X', new ItemStack(Items.BRICK),
+                'A', new ItemStack(Items.BOWL),
+                'B', new ItemStack(Blocks.STONE_SLAB, 1, 4),
+                'C', OreDictNames.chestWood);
+
         ModHandler.addShapedRecipe("dirt_furnace", RTMetaTileEntities.DIRT_FURNACE.getStackForm(),
                 "XXX", "BBB", "XXX",
-                'X', getPrimitiveFurnaceMaterial(),
+                'X', new ItemStack(Blocks.DIRT),
                 'B', new UnificationEntry(OrePrefix.gem, Materials.Flint));
+        ModHandler.addShapedRecipe("sandstone_heater", MteHeater.SAMPLE.getStackForm(),
+                "XXX", "BBB", "XXX",
+                'X', "sandstone",
+                'B', new UnificationEntry(OrePrefix.gem, Materials.Flint));
+
         ModHandler.addShapelessRecipe("plant_string", RTMetaItem.PLANT_STRING.getStackForm(),
                 Collections.nCopies(3,RTMetaItem.PLANT_FIBER.getStackForm()).toArray());
         ModHandler.addShapedRecipe("plant_mesh", RTMetaItem.PLANT_MESH.getStackForm(),

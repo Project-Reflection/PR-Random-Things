@@ -10,11 +10,13 @@ import gregtech.api.unification.material.properties.PropertyKey;
 import gregtech.api.unification.material.properties.ToolProperty;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.MaterialStack;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 import prrandomthings.constants.RTConstants;
 import prrandomthings.config.RTConfig;
+import prrandomthings.enchantments.EnchantmentManaRepair;
 
 public class RTMaterials {
     //Element materials
@@ -72,6 +74,7 @@ public class RTMaterials {
                 .gem(2)
                 .iconSet(MaterialIconSet.DIAMOND)
                 .ore()
+                .fluid()
                 .flags(MaterialFlags.NO_SMELTING,MaterialFlags.MORTAR_GRINDABLE,MaterialFlags.GENERATE_PLATE,
                         MaterialFlags.GENERATE_ROD,MaterialFlags.GENERATE_BOLT_SCREW)
                 .toolStats(new ToolProperty(8f,6f,256,3))
@@ -85,7 +88,9 @@ public class RTMaterials {
                 .flags(MaterialFlags.DISABLE_DECOMPOSITION,MaterialFlags.GENERATE_PLATE,MaterialFlags.GENERATE_ROD,
                         MaterialFlags.GENERATE_BOLT_SCREW)
                 .toolStats(ToolProperty.Builder.of(6.2f,2f,300,3)
-                        .enchantability(20).build())
+                        .enchantability(20)
+                        //.enchantment(EnchantmentManaRepair.MANA_REPAIR,1)//为什么实际加上的是熔炼附魔？
+                        .build())
                 .build();
         MANA_PEARL=new Material.Builder(id++,RTConstants.RTID("mana_pearl"))
                 .color(0x66ccff)
@@ -129,6 +134,7 @@ public class RTMaterials {
                         MaterialFlags.GENERATE_BOLT_SCREW)
                 .toolStats(ToolProperty.Builder.of(9f,3f,2300,4)
                         .enchantability(26)
+                        //.enchantment(EnchantmentManaRepair.MANA_REPAIR,1)
                         .build())
                 .build();
         ELVEN_ELEMENTIUM=new Material.Builder(id++,RTConstants.RTID("elven_elementium"))
@@ -139,7 +145,9 @@ public class RTMaterials {
                 .flags(MaterialFlags.DISABLE_DECOMPOSITION,MaterialFlags.GENERATE_PLATE,MaterialFlags.GENERATE_ROD,
                         MaterialFlags.GENERATE_BOLT_SCREW)
                 .toolStats(ToolProperty.Builder.of(6.2f,2f,720,3)
-                        .enchantability(20).build())
+                        .enchantability(20)
+                        //.enchantment(EnchantmentManaRepair.MANA_REPAIR,1)
+                        .build())
                 .build();
 
         //dealIntegration();
@@ -167,7 +175,6 @@ public class RTMaterials {
     {
         if(RTConstants.Environment.botaniaLoaded)
         {
-
             Item manaResource=Item.getByNameOrId("botania:manaresource");
             assert manaResource != null;
             OreDictUnifier.registerOre(new ItemStack(manaResource,1,2),
@@ -178,6 +185,11 @@ public class RTMaterials {
             assert storageBlock !=null;
             OreDictUnifier.registerOre(new ItemStack(storageBlock,1,3),
                     OrePrefix.block,MANA_DIAMOND);
+
+            var mana_repair= Enchantment.getEnchantmentByLocation(RTConstants.MODID+":mana_repair");
+            MANASTEEEL.getProperty(PropertyKey.TOOL).addEnchantmentForTools(mana_repair,1);
+            TERRASTEEL.getProperty(PropertyKey.TOOL).addEnchantmentForTools(mana_repair,1);
+            ELVEN_ELEMENTIUM.getProperty(PropertyKey.TOOL).addEnchantmentForTools(mana_repair,1);
         }
     }
     private static void ignore(OrePrefix prefix,Material... materials)

@@ -6,15 +6,19 @@ import gregtech.api.unification.material.event.MaterialEvent;
 import gregtech.api.unification.material.event.PostMaterialEvent;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.common.metatileentities.MetaTileEntities;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import prrandomthings.constants.RTConstants;
 import prrandomthings.config.RTConfig;
+import prrandomthings.enchantments.EnchantmentManaRepair;
+import prrandomthings.enchantments.RTEnchantments;
 import prrandomthings.items.RTMetaItem;
 import prrandomthings.mte.multiblock.MteHeater;
 import prrandomthings.recipes.CraftingRecipes;
@@ -69,21 +73,30 @@ public class RegistryEvents {
         MetaTileEntities.registerMetaTileEntity(id++, RTMetaTileEntities.BRICK_BARREL);
         MetaTileEntities.registerMetaTileEntity(id++, RTMetaTileEntities.DIRT_FURNACE);
         MetaTileEntities.registerMetaTileEntity(id++, MteHeater.SAMPLE);
+        MetaTileEntities.registerMetaTileEntity(id++,RTMetaTileEntities.CRUCIBLE);
     }
 
     @SubscribeEvent
     public static void registerMaterials(MaterialEvent event) {
+        RTConstants.LOGGER.info("Registering materials");
         RTMaterials.register();
     }
     @SubscribeEvent
     public static void postRegisterMaterials(PostMaterialEvent event)
     {
+        RTConstants.LOGGER.info("Modifying existing materials");
         RTMaterials.postRegister();
     }
 
     @SubscribeEvent
     public static void onMaterialInfo(GregTechAPI.RegisterEvent<ItemMaterialInfo> event)
     {
+        RTConstants.LOGGER.info("Adding material information");
         RTMaterials.onMaterialInfo();
+    }
+    @SubscribeEvent(priority=EventPriority.LOW)
+    public static void onEnchantment(RegistryEvent.Register<Enchantment> event){
+        RTConstants.LOGGER.info("Registering enchantments");
+        RTEnchantments.register(event.getRegistry());
     }
 }

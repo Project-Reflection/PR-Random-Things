@@ -3,23 +3,32 @@ package prrandomthings.events;
 import net.minecraft.block.BlockDoublePlant;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import prrandomthings.PRRandomThings;
 import prrandomthings.constants.RTConstants;
 import prrandomthings.config.RTConfig;
+import prrandomthings.enchantments.EnchantmentManaRepair;
 import prrandomthings.items.RTMetaItem;
 import prrandomthings.jumpscare.JumpscareHandler;
+import prrandomthings.utils.PREnvironment;
 import twelvefold.twelvefoldbooter.api.misc.NBTUtils;
+import vazkii.botania.api.mana.ManaItemHandler;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -59,8 +68,21 @@ public class ServerEvents {
 
     @SubscribeEvent
     public static void onLivingTick(LivingEvent.LivingUpdateEvent event) {
-        if (event.getEntityLiving() instanceof EntityPlayerMP playerMP && RTConfig.jumpscareInterval > 0) {
-            JumpscareHandler.fromPlayer(playerMP).tick();
+        if (event.getEntityLiving() instanceof EntityPlayerMP playerMP) {
+            if (RTConfig.jumpscareInterval > 0) {
+                JumpscareHandler.fromPlayer(playerMP).tick();
+            }
+            if (Loader.isModLoaded("botania")) {
+                for (int i = 0; i < playerMP.inventory.getSizeInventory(); i++) {
+                    var stack = playerMP.inventory.getStackInSlot(i);
+                    if (stack.getItemDamage() > 0
+                            && EnchantmentHelper.getEnchantmentLevel(EnchantmentManaRepair.MANA_REPAIR, stack) > 0) {
+                        if (ManaItemHandler.requestManaExactForTool(stack, playerMP, 120, true)) {
+                            stack.setItemDamage(stack.getItemDamage() - 1);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -68,8 +90,14 @@ public class ServerEvents {
     public static void onBlockDrops(BlockEvent.HarvestDropsEvent event) {
         if (event.getWorld().isRemote) return;
         IBlockState state = event.getState();
-        if (state.getBlock() instanceof BlockTallGrass || (state.getBlock() instanceof BlockDoublePlant && (state.getValue(BlockDoublePlant.VARIANT) == BlockDoublePlant.EnumPlantType.FERN || state.getValue(BlockDoublePlant.VARIANT) == BlockDoublePlant.EnumPlantType.GRASS))) {
+        if (state.getBlock() instanceof BlockTallGrass
+                || (state.getBlock() instanceof BlockDoublePlant
+                && (state.getValue(BlockDoublePlant.VARIANT) == BlockDoublePlant.EnumPlantType.FERN
+                || state.getValue(BlockDoublePlant.VARIANT) == BlockDoublePlant.EnumPlantType.GRASS))) {
             EntityPlayer player = event.getHarvester();
+            if (player == null) {
+                return;
+            }
             ItemStack stack = player.getHeldItemMainhand();
 
             if (RTConstants.generalRandom.nextFloat() < 0.4) {

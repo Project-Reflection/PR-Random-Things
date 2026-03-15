@@ -5,6 +5,7 @@ import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
+import gregtech.api.capability.impl.RecipeLogicEnergy;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.SimpleGeneratorMetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
@@ -15,20 +16,32 @@ import gregtech.client.renderer.ICubeRenderer;
 import gregtech.client.renderer.texture.Textures;
 import gregtech.client.utils.PipelineUtil;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
+import prrandomthings.recipes.logic.MagicGeneratorRecipeLogic;
 
 public class MteCustomGenerator extends SimpleGeneratorMetaTileEntity {
+    private boolean isMagic;
 
-    protected MteCustomGenerator(ResourceLocation metaTileEntityId, RecipeMap<?> recipeMap, ICubeRenderer texture,int tier) {
-        super(metaTileEntityId, recipeMap,texture,
-                tier, GTUtility.genericGeneratorTankSizeFunction);
+    protected MteCustomGenerator(ResourceLocation metaTileEntityId, RecipeMap<?> recipeMap,
+                                 ICubeRenderer texture, int tier) {
+        this(metaTileEntityId, recipeMap, texture,
+                tier, false);
     }
+
+    protected MteCustomGenerator(ResourceLocation metaTileEntityId, RecipeMap<?> recipeMap,
+                                 ICubeRenderer texture, int tier, boolean isMagic) {
+        super(metaTileEntityId, recipeMap, texture,
+                tier, GTUtility.genericGeneratorTankSizeFunction);
+        this.isMagic = isMagic;
+    }
+
     @Override
     public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
-        return new MteCustomGenerator(this.metaTileEntityId,this.recipeMap,this.renderer,getTier());
+        return new MteCustomGenerator(this.metaTileEntityId, this.recipeMap, this.renderer, getTier(), isMagic);
     }
 
     @Override
@@ -40,7 +53,12 @@ public class MteCustomGenerator extends SimpleGeneratorMetaTileEntity {
     @Override
     public void randomDisplayTick() {
         if (isActive()) {
-            VanillaParticleEffects.RANDOM_SPARKS.runEffect(this);
+            if (this.isMagic) {
+                VanillaParticleEffects.defaultFrontEffect(this, EnumParticleTypes.PORTAL,
+                        EnumParticleTypes.ENCHANTMENT_TABLE);
+            } else {
+                VanillaParticleEffects.RANDOM_SPARKS.runEffect(this);
+            }
         }
     }
 
@@ -54,8 +72,7 @@ public class MteCustomGenerator extends SimpleGeneratorMetaTileEntity {
                     getFrontFacing().rotateY(),
                     workable.isActive(),
                     workable.isWorkingEnabled());
-        }catch (IllegalStateException e)
-        {
+        } catch (IllegalStateException e) {
             this.renderer.renderOrientedState(renderState, translation, pipeline,
                     EnumFacing.NORTH,
                     workable.isActive(),
@@ -63,5 +80,11 @@ public class MteCustomGenerator extends SimpleGeneratorMetaTileEntity {
         }
         Textures.ENERGY_OUT.renderSided(getFrontFacing(), renderState, translation,
                 PipelineUtil.color(pipeline, GTValues.VC[getTier()]));
+    }
+
+    @Override
+    protected RecipeLogicEnergy createWorkable(RecipeMap<?> recipeMap) {
+        return isMagic ? new MagicGeneratorRecipeLogic(this, this.recipeMap, () -> this.energyContainer)
+                : super.createWorkable(recipeMap);
     }
 }
