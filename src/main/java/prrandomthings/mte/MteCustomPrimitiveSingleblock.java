@@ -38,25 +38,38 @@ import java.util.List;
 public class MteCustomPrimitiveSingleblock extends MetaTileEntity implements IGhostSlotConfigurable {
     private static final int FONT_HEIGHT = 9;
 
-    private final ICubeRenderer baseTexture;
-    private final ICubeRenderer overlay;
+    protected final ICubeRenderer baseTexture;
+    protected final ICubeRenderer overlay;
     protected GhostCircuitItemStackHandler circuitInventory;
     private IItemHandlerModifiable actualImportItems;
     protected RecipeMap<?> recipeMap;
 
     protected NoEnergyRecipeLogic recipeMapWorkable;
 
-    public MteCustomPrimitiveSingleblock(ResourceLocation metaTileEntityId,
+    protected MteCustomPrimitiveSingleblock(ResourceLocation metaTileEntityId,
                                          RecipeMap<?> recipeMap,
                                          ICubeRenderer baseTexture,
-                                         ICubeRenderer overlay)
+                                         ICubeRenderer overlay,
+                                         boolean doInitializeAbilities)
     {
         super(metaTileEntityId);
         this.baseTexture=baseTexture;
         this.overlay=overlay;
         this.recipeMap=recipeMap;
-        this.recipeMapWorkable=new NoEnergyRecipeLogic(this,recipeMap);
-        this.initializeAbilities();
+        if(doInitializeAbilities) {
+            this.recipeMapWorkable = this.initializeRecipeLogic();
+            this.initializeAbilities();
+        }
+    }
+    public MteCustomPrimitiveSingleblock(ResourceLocation metaTileEntityId,
+                                         RecipeMap<?> recipeMap,
+                                         ICubeRenderer baseTexture,
+                                         ICubeRenderer overlay){
+        this(metaTileEntityId,recipeMap,baseTexture,overlay,true);
+
+    }
+    protected NoEnergyRecipeLogic initializeRecipeLogic(){
+        return new NoEnergyRecipeLogic(this,recipeMap);
     }
     protected void initializeAbilities() {
         this.importItems = new NotifiableItemStackHandler(this, this.recipeMap.getMaxInputs(), this,

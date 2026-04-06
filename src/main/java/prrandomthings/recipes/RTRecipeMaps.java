@@ -39,4 +39,7 @@ public class RTRecipeMaps {
     public static final RecipeMap<PrimitiveRecipeBuilder> DIRT_FURNACE=new RecipeMap<>("dirt_furnace",
             3,1,0,0,
             new PrimitiveRecipeBuilder(),false).setSound(SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE);
+
+    public static final RecipeMap<PrimitiveRecipeBuilder> INFUSER=new RecipeMap<>("infuser",
+            1,1,1,0,new PrimitiveRecipeBuilder(),false);
 }

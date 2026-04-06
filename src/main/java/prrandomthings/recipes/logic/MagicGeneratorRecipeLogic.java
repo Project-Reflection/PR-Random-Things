@@ -6,7 +6,6 @@ import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.recipeproperties.IRecipePropertyStorage;
 import org.jetbrains.annotations.NotNull;
 import prrandomthings.mte.MteCustomGenerator;
-import prrandomthings.utils.PREnvironment;
 
 import java.util.function.Supplier;
 
@@ -20,23 +19,9 @@ public class MagicGeneratorRecipeLogic extends FuelRecipeLogic {
     }
 
     @Override
-    protected void updateRecipeProgress() {
-        double env= PREnvironment.getEnvironmentFactor(tileEntity.getWorld(),tileEntity.getPos());
-        double envVoltage=8.*Math.pow(4,env);
-        if(envVoltage > recipeEUt) {
-            super.updateRecipeProgress();
-        }
-    }
+    protected void modifyOverclockPost(int[] overclockResults, @NotNull IRecipePropertyStorage storage) {
+        super.modifyOverclockPost(overclockResults, storage);
+        //0：能量 1：时间
 
-    @Override
-    protected void modifyOverclockPre(@NotNull int[] values, @NotNull IRecipePropertyStorage storage) {
-        super.modifyOverclockPre(values, storage);
-    }
-
-    @Override
-    public long getMaxVoltage() {
-        double env= PREnvironment.getEnvironmentFactor(tileEntity.getWorld(),tileEntity.getPos());
-        double envVoltage=8.*Math.pow(4,env);
-        return Math.min(super.getMaxVoltage(),(long) envVoltage);
     }
 }

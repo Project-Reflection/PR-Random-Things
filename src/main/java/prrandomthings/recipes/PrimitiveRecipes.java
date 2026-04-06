@@ -1,7 +1,6 @@
 package prrandomthings.recipes;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.builders.PrimitiveRecipeBuilder;
@@ -11,6 +10,7 @@ import gregtech.api.recipes.ingredients.GTRecipeItemInput;
 import gregtech.api.recipes.ingredients.GTRecipeOreInput;
 import gregtech.api.unification.material.Material;
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.info.MaterialFlags;
 import gregtech.api.unification.material.properties.OreProperty;
 import gregtech.api.unification.material.properties.PropertyKey;
 import gregtech.api.unification.ore.OrePrefix;
@@ -25,9 +25,9 @@ import prrandomthings.config.RTConfig;
 import prrandomthings.constants.RTConstants;
 import prrandomthings.items.RTMetaItem;
 import prrandomthings.materials.RTMaterials;
+import prrandomthings.utils.RTUtilities;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -61,7 +61,7 @@ public final class PrimitiveRecipes {
     }
 
     public static void register() {
-        clear(PBF_RECIPES);
+        RTUtilities.clearRecipeMap(PBF_RECIPES);
         PBF_RECIPES.recipeBuilder()
                 .output(OrePrefix.ingot, Materials.Steel, 1)
                 .output(OrePrefix.gem, RTMaterials.SLAG, 1)
@@ -237,7 +237,9 @@ public final class PrimitiveRecipes {
         //endregion
 
         for (Material mat : GregTechAPI.materialManager.getRegisteredMaterials()) {
-
+            if(mat.hasFlag(MaterialFlags.NO_UNIFICATION)){
+                continue;
+            }
             if (mat.hasFluid() && mat.getBlastTemperature() <= 0) {
                 //crucible melting
                 if (mat.hasProperty(PropertyKey.DUST)) {
@@ -353,10 +355,4 @@ public final class PrimitiveRecipes {
                 .buildAndRegister();
     }
 
-    public static void clear(RecipeMap<?> recipeMap) {
-        Collection<Recipe> recipes = recipeMap.getRecipeList();
-        for (Recipe recipe : recipes) {
-            recipeMap.removeRecipe(recipe);
-        }
-    }
 }

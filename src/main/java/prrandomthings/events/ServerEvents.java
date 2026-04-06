@@ -9,18 +9,20 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import prrandomthings.PRRandomThings;
 import prrandomthings.constants.RTConstants;
 import prrandomthings.config.RTConfig;
 import prrandomthings.enchantments.EnchantmentManaRepair;
@@ -83,6 +85,20 @@ public class ServerEvents {
                     }
                 }
             }
+            //play effect
+            for (int x1 = -16; x1 < 32; x1++) {
+                for (int z1 = -16; z1 < 32; z1++) {
+                    BlockPos playerPos = playerMP.getPosition();
+                    BlockPos checkPos = new BlockPos((playerPos.getX() & 0xfffffff0) + x1, playerPos.getY(), (playerPos.getZ() & 0xfffffff0) + z1);
+                    double ef = PREnvironment.getEnvironmentFactor(playerMP.world, checkPos);
+                    ((WorldServer) playerMP.world).spawnParticle(playerMP, EnumParticleTypes.REDSTONE, true,
+                            checkPos.getX() + RTConstants.generalRandom.nextDouble(),
+                            64.0 + ef, checkPos.getZ() + RTConstants.generalRandom.nextDouble(), 0, -1., 0, Math.tanh(ef), 1);
+                    if (checkPos.equals(playerPos))
+                        playerMP.sendStatusMessage(new TextComponentString(String.format("Current: %g, Min: %g, Max: %g",
+                                ef, PREnvironment.globalMinEnv, PREnvironment.globalMaxEnv)), true);
+                }
+            }
         }
     }
 
@@ -112,5 +128,10 @@ public class ServerEvents {
                 player.setHeldItem(EnumHand.MAIN_HAND, stack); // Necessary because the stack came from IPlayerItem
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void attachWorldCapabilities(AttachCapabilitiesEvent<World> event){
+        PREnvironment.init(event.getObject());
     }
 }

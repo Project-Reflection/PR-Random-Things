@@ -17,11 +17,11 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import prrandomthings.constants.RTConstants;
 import prrandomthings.config.RTConfig;
-import prrandomthings.enchantments.EnchantmentManaRepair;
 import prrandomthings.enchantments.RTEnchantments;
 import prrandomthings.items.RTMetaItem;
 import prrandomthings.mte.multiblock.MteHeater;
 import prrandomthings.recipes.CraftingRecipes;
+import prrandomthings.recipes.ArsNouveauRecipes;
 import prrandomthings.recipes.MetallurgicRecipes;
 import prrandomthings.recipes.PrimitiveRecipes;
 import prrandomthings.materials.RTMaterials;
@@ -47,8 +47,8 @@ public class RegistryEvents {
     public static void registerRecipeEvent(RegistryEvent.Register<IRecipe> event) {
         PrimitiveRecipes.register();
         MetallurgicRecipes.register();
+        ArsNouveauRecipes.register();
         CraftingRecipes.registerCraftingRecipes();
-
     }
 
     @SubscribeEvent
@@ -74,6 +74,7 @@ public class RegistryEvents {
         MetaTileEntities.registerMetaTileEntity(id++, RTMetaTileEntities.DIRT_FURNACE);
         MetaTileEntities.registerMetaTileEntity(id++, MteHeater.SAMPLE);
         MetaTileEntities.registerMetaTileEntity(id++,RTMetaTileEntities.CRUCIBLE);
+        MetaTileEntities.registerMetaTileEntity(id++,RTMetaTileEntities.INFUSER);
     }
 
     @SubscribeEvent

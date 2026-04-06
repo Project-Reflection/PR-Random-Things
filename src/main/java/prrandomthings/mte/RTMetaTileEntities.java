@@ -10,6 +10,8 @@ import net.minecraft.util.ResourceLocation;
 import prrandomthings.api.PRMultiblockAbility;
 import prrandomthings.constants.RTConstants;
 import prrandomthings.constants.RTTextures;
+import prrandomthings.materials.RTMaterials;
+import prrandomthings.mte.magic.MteLiquidFuelSingleblock;
 import prrandomthings.mte.multiblock.MteThermalMultiblock;
 import prrandomthings.recipes.RTRecipeMaps;
 
@@ -18,30 +20,38 @@ public class RTMetaTileEntities {
     public static final MteCustomGenerator[] METALLURGIC_GENERATORS = new MteCustomGenerator[3];
     public static final MteCustomGenerator[] REACTANT_GENERATORS = new MteCustomGenerator[3];
 
-    public static final MetaTileEntity COMPOSTING_BARREL = new MteCustomPrimitiveSingleblock(RTConstants.RTID("composting_barrel"),
-            RTRecipeMaps.COMPOSTING_BARREL, RTTextures.WOODEN_PLANKS, RTTextures.ITEM_COLLECTOR_OVERLAY);
+    public static final MetaTileEntity COMPOSTING_BARREL = new MteCustomPrimitiveSingleblock(
+            RTConstants.RTID("composting_barrel"),
+            RTRecipeMaps.COMPOSTING_BARREL,
+            RTTextures.WOODEN_PLANKS,
+            RTTextures.ITEM_COLLECTOR_OVERLAY);
 
     public static final MetaTileEntity SIEVE = new MteCustomPrimitiveSingleblock(RTConstants.RTID("sieve"
     ), RTRecipeMaps.SIEVE, RTTextures.WOODEN_PLANKS, Textures.SIFTER_OVERLAY);
-    public static final MetaTileEntity BRICK_BARREL = new MteCustomPrimitiveSingleblock(RTConstants.RTID("brick_barrel"),
-            RTRecipeMaps.STONE_BARREL, RTTextures.BRICKS, RTTextures.ITEM_COLLECTOR_OVERLAY);
-
+    public static final MetaTileEntity BRICK_BARREL = new MteCustomPrimitiveSingleblock(
+            RTConstants.RTID("brick_barrel"),
+            RTRecipeMaps.STONE_BARREL,
+            RTTextures.BRICKS,
+            RTTextures.ITEM_COLLECTOR_OVERLAY);
 
 
     public static final MetaTileEntity DIRT_FURNACE = new MteThermalMultiblock(RTConstants.RTID("dirt_furnace"),
             RTRecipeMaps.DIRT_FURNACE, RTTextures.DIRT, Textures.ALLOY_SMELTER_OVERLAY,
-            selfPredicate -> FactoryBlockPattern.start().aisle("CCC", "CCC", " C ").aisle("CCC", "C#C", " C ").aisle("CDC", "C@C", " C ")
+            selfPredicate -> FactoryBlockPattern.start()
+                    .aisle("CCC", "CCC", " C ")
+                    .aisle("CCC", "C#C", " C ")
+                    .aisle("CDC", "C@C", " C ")
                     .where('C', MultiblockControllerBase.states(Blocks.DIRT.getDefaultState()))
                     .where('#', MultiblockControllerBase.air())
                     .where('@', selfPredicate)
                     .where('D', MultiblockControllerBase.abilities(PRMultiblockAbility.HEATER))
                     .build());
 
-    public static final MetaTileEntity CRUCIBLE=new MteThermalMultiblock(RTConstants.RTID("crucible"),
-            RTRecipeMaps.CRUCIBLE,RTTextures.BRICKS,Textures.EXTRACTOR_OVERLAY,
-            selfPredicate->FactoryBlockPattern.start().aisle("D","@")
-                    .where('D',MultiblockControllerBase.abilities(PRMultiblockAbility.HEATER))
-                    .where('@',selfPredicate).build());
+    public static final MetaTileEntity CRUCIBLE = new MteThermalMultiblock(RTConstants.RTID("crucible"),
+            RTRecipeMaps.CRUCIBLE, RTTextures.BRICKS, Textures.EXTRACTOR_OVERLAY,
+            selfPredicate -> FactoryBlockPattern.start().aisle("D", "@")
+                    .where('D', MultiblockControllerBase.abilities(PRMultiblockAbility.HEATER))
+                    .where('@', selfPredicate).build());
 
     static {
         for (int i = 0; i < METALLURGIC_GENERATORS.length; i++) {
@@ -57,4 +67,11 @@ public class RTMetaTileEntities {
         }
 
     }
+
+    public static final MetaTileEntity INFUSER = new MteLiquidFuelSingleblock(RTConstants.RTID("infuser"),
+            RTRecipeMaps.INFUSER,
+            RTTextures.WOODEN_PLANKS,
+            Textures.MASS_FABRICATOR_OVERLAY,
+            RTMaterials.SOURCE.getFluid(10), true,true
+    );
 }

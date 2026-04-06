@@ -39,6 +39,8 @@ public class RTMaterials {
     //Second degree materials
     public static Material TERRASTEEL;
     public static Material ELVEN_ELEMENTIUM;
+    public static Material SOURCE;
+
     public static void register() {
         int id= RTConfig.startMaterialID;
         SPACE=new Material.Builder(id++,RTConstants.RTID("space"))
@@ -151,6 +153,15 @@ public class RTMaterials {
                 .build();
 
         //dealIntegration();
+        SOURCE=new Material.Builder(id++, RTConstants.RTID("source"))
+                .gem()
+                .fluid()
+                .ore()
+                .color(0xff00cc)
+                .components(MAGIC,1)
+                .iconSet(MaterialIconSet.DIAMOND)
+                .flags(MaterialFlags.NO_UNIFICATION,MaterialFlags.DISABLE_DECOMPOSITION)
+                .build();
     }
     public static void postRegister()
     {
