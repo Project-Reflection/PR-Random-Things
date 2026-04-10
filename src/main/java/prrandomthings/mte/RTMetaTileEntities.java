@@ -74,4 +74,9 @@ public class RTMetaTileEntities {
             Textures.MASS_FABRICATOR_OVERLAY,
             RTMaterials.SOURCE.getFluid(10), true,true
     );
+    public static final MetaTileEntity PITIFUL_BOILER=new MteThermalMultiblock(RTConstants.RTID("pitiful_boiler"),
+            RTRecipeMaps.PITIFUL_BOILER, RTTextures.SMOOTH_SANDSTONE, Textures.COAL_BOILER_OVERLAY,
+            selfPredicate -> FactoryBlockPattern.start().aisle("D", "@")
+                    .where('D', MultiblockControllerBase.abilities(PRMultiblockAbility.HEATER))
+                    .where('@', selfPredicate).build());
 }

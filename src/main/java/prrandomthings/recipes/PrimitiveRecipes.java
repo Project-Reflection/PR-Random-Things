@@ -353,6 +353,12 @@ public final class PrimitiveRecipes {
                 .output(Items.BRICK, 1)
                 .duration(20 * 20)
                 .buildAndRegister();
+
+        RTRecipeMaps.PITIFUL_BOILER.recipeBuilder()
+                .fluidInputs(Materials.Water.getFluid(1))
+                .fluidOutputs(RTMaterials.LOW_QUALITY_STEAM.getFluid(320))
+                .duration(320)
+                .buildAndRegister();
     }
 
 }

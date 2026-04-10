@@ -1,5 +1,7 @@
 package prrandomthings.materials;
 
+import gregtech.api.fluids.FluidBuilder;
+import gregtech.api.fluids.FluidState;
 import gregtech.api.unification.Elements;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Material;
@@ -40,6 +42,7 @@ public class RTMaterials {
     public static Material TERRASTEEL;
     public static Material ELVEN_ELEMENTIUM;
     public static Material SOURCE;
+    public static Material LOW_QUALITY_STEAM;
 
     public static void register() {
         int id= RTConfig.startMaterialID;
@@ -161,6 +164,11 @@ public class RTMaterials {
                 .components(MAGIC,1)
                 .iconSet(MaterialIconSet.DIAMOND)
                 .flags(MaterialFlags.NO_UNIFICATION,MaterialFlags.DISABLE_DECOMPOSITION)
+                .build();
+        LOW_QUALITY_STEAM=new Material.Builder(id++,RTConstants.RTID("low_quality_steam"))
+                .gas(new FluidBuilder().state(FluidState.GAS).temperature(373))
+                .components(Materials.Steam,1)
+                .colorAverage()
                 .build();
     }
     public static void postRegister()

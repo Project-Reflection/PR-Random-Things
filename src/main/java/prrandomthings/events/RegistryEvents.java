@@ -2,6 +2,8 @@ package prrandomthings.events;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.recipes.RecipeMaps;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.event.MaterialEvent;
 import gregtech.api.unification.material.event.PostMaterialEvent;
 import gregtech.api.unification.stack.ItemMaterialInfo;
@@ -49,6 +51,14 @@ public class RegistryEvents {
         MetallurgicRecipes.register();
         ArsNouveauRecipes.register();
         CraftingRecipes.registerCraftingRecipes();
+
+        RecipeMaps.STEAM_TURBINE_FUELS.getRecipeList().forEach(RecipeMaps.STEAM_TURBINE_FUELS::removeRecipe);
+        RecipeMaps.STEAM_TURBINE_FUELS.recipeBuilder()
+                .fluidInputs(Materials.Steam.getFluid(64))
+                .fluidOutputs(RTMaterials.LOW_QUALITY_STEAM.getFluid(128))
+                .EUt(32)
+                .duration(1)
+                .buildAndRegister();
     }
 
     @SubscribeEvent
@@ -75,6 +85,7 @@ public class RegistryEvents {
         MetaTileEntities.registerMetaTileEntity(id++, MteHeater.SAMPLE);
         MetaTileEntities.registerMetaTileEntity(id++,RTMetaTileEntities.CRUCIBLE);
         MetaTileEntities.registerMetaTileEntity(id++,RTMetaTileEntities.INFUSER);
+        MetaTileEntities.registerMetaTileEntity(id++,RTMetaTileEntities.PITIFUL_BOILER);
     }
 
     @SubscribeEvent
