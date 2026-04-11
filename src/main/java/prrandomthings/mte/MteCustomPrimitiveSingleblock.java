@@ -118,8 +118,7 @@ public class MteCustomPrimitiveSingleblock extends MetaTileEntity implements IGh
         return new MteCustomPrimitiveSingleblock(this.metaTileEntityId,this.recipeMap,this.baseTexture,this.overlay);
     }
 
-    @Override
-    protected ModularUI createUI(EntityPlayer entityPlayer) {
+    protected ModularUI.Builder createUIBuilder(EntityPlayer entityPlayer) {
         RecipeMap<?> workableRecipeMap=this.recipeMapWorkable.getRecipeMap();
         assert workableRecipeMap != null;
         int totalInputs=workableRecipeMap.getMaxInputs() + workableRecipeMap.getMaxFluidInputs();
@@ -137,9 +136,13 @@ public class MteCustomPrimitiveSingleblock extends MetaTileEntity implements IGh
                     .setBackgroundTexture(GuiTextures.SLOT, getCircuitSlotOverlay());
             builder.widget(circuitSlot.setConsumer(this::getCircuitSlotTooltip));
         }
-        return builder.build(this.getHolder(),entityPlayer);
+        return builder;
     }
 
+    @Override
+    protected ModularUI createUI(EntityPlayer entityPlayer){
+        return createUIBuilder(entityPlayer).build(this.getHolder(),entityPlayer);
+    }
     private void getCircuitSlotTooltip(SlotWidget slotWidget) {
         String configString;
         if (circuitInventory == null || circuitInventory.getCircuitValue() == GhostCircuitItemStackHandler.NO_CONFIG) {
