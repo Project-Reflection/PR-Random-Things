@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -16,12 +17,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import prrandomthings.constants.RTConstants;
 import prrandomthings.config.RTConfig;
@@ -78,25 +79,27 @@ public class ServerEvents {
                 for (int i = 0; i < playerMP.inventory.getSizeInventory(); i++) {
                     var stack = playerMP.inventory.getStackInSlot(i);
                     if (stack.getItemDamage() > 0
-                            && EnchantmentHelper.getEnchantmentLevel(EnchantmentManaRepair.MANA_REPAIR, stack) > 0) {
+                            && EnchantmentHelper.getEnchantmentLevel(EnchantmentManaRepair.INSTANCE, stack) > 0) {
                         if (ManaItemHandler.requestManaExactForTool(stack, playerMP, 120, true)) {
                             stack.setItemDamage(stack.getItemDamage() - 1);
                         }
                     }
                 }
             }
-            //play effect
-            for (int x1 = -16; x1 < 32; x1++) {
-                for (int z1 = -16; z1 < 32; z1++) {
-                    BlockPos playerPos = playerMP.getPosition();
-                    BlockPos checkPos = new BlockPos((playerPos.getX() & 0xfffffff0) + x1, playerPos.getY(), (playerPos.getZ() & 0xfffffff0) + z1);
-                    double ef = PREnvironment.getEnvironmentFactor(playerMP.world, checkPos);
-                    ((WorldServer) playerMP.world).spawnParticle(playerMP, EnumParticleTypes.REDSTONE, true,
-                            checkPos.getX() + RTConstants.generalRandom.nextDouble(),
-                            64.0 + ef, checkPos.getZ() + RTConstants.generalRandom.nextDouble(), 0, -1., 0, Math.tanh(ef), 1);
-                    if (checkPos.equals(playerPos))
-                        playerMP.sendStatusMessage(new TextComponentString(String.format("Current: %g, Min: %g, Max: %g",
-                                ef, PREnvironment.globalMinEnv, PREnvironment.globalMaxEnv)), true);
+            if (RTConfig.debugEnvironmentFactor) {
+                //play effect
+                for (int x1 = -16; x1 < 32; x1++) {
+                    for (int z1 = -16; z1 < 32; z1++) {
+                        BlockPos playerPos = playerMP.getPosition();
+                        BlockPos checkPos = new BlockPos((playerPos.getX() & 0xfffffff0) + x1, playerPos.getY(), (playerPos.getZ() & 0xfffffff0) + z1);
+                        double ef = PREnvironment.getEnvironmentFactor(playerMP.world, checkPos);
+                        ((WorldServer) playerMP.world).spawnParticle(playerMP, EnumParticleTypes.REDSTONE, true,
+                                checkPos.getX() + RTConstants.generalRandom.nextDouble(),
+                                64.0 + ef, checkPos.getZ() + RTConstants.generalRandom.nextDouble(), 0, -1., 0, Math.tanh(ef), 1);
+                        if (checkPos.equals(playerPos))
+                            playerMP.sendStatusMessage(new TextComponentString(String.format("Current: %g, Min: %g, Max: %g",
+                                    ef, PREnvironment.globalMinEnv, PREnvironment.globalMaxEnv)), true);
+                    }
                 }
             }
         }
@@ -131,7 +134,32 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public static void attachWorldCapabilities(AttachCapabilitiesEvent<World> event){
-        PREnvironment.init(event.getObject());
+    public static void attachWorldCapabilities(AttachCapabilitiesEvent<World> event) {
+        World world = event.getObject();
+        if (!world.getWorldInfo().getWorldName().equals("just_enough_resources_fake"))
+            PREnvironment.init(world);
+    }
+
+    private static boolean canPickup(EntityPlayer player){
+        if(player.isCreative())
+            return true;
+        float check=player.getMaxHealth() * RTConstants.generalRandom.nextFloat();
+        return player.getHealth() < check;
+    }
+    @SubscribeEvent
+    public static void onItemPickup(EntityItemPickupEvent event) {
+        var player = event.getEntityPlayer();
+        if (player.world.isRemote) {
+            return;
+        }
+        var entityItem=event.getItem();
+        var ds=new EntityDamageSource("indirectMagic", entityItem)
+                .setDamageBypassesArmor()
+                .setDamageIsAbsolute();
+        if (!canPickup(player) && !player.attackEntityFrom(ds,
+                entityItem.getItem().getCount()))
+        {
+            event.setCanceled(true);
+        }
     }
 }

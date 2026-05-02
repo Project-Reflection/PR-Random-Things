@@ -1,7 +1,7 @@
 {
   "required": true,
   "package": "prrandomthings.mixin",
-  "refmap": "mixins.replacememodid.refmap.json",
+  "refmap": "mixins.prrandomthings.refmap.json",
   "compatibilityLevel": "JAVA_8",
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",

@@ -70,11 +70,11 @@ public class CraftingRecipes {
         ModHandler.addShapelessRecipe("plant_string", RTMetaItem.PLANT_STRING.getStackForm(),
                 Collections.nCopies(3,RTMetaItem.PLANT_FIBER.getStackForm()).toArray());
         ModHandler.addShapedRecipe("plant_mesh", RTMetaItem.PLANT_MESH.getStackForm(),
-                "XAX","AAA","XAX",
-                'X',"stickWood",'A',RTMetaItem.PLANT_STRING.getStackForm());
+                "AAA","AAA","AAA",
+                'A',RTMetaItem.PLANT_STRING.getStackForm());
         ModHandler.addShapedRecipe("string_mesh", RTMetaItem.STRING_MESH.getStackForm(),
-                "XAX","AAA","XAX",
-                'X',"stickWood",'A',Items.STRING.getDefaultInstance());
+                "AAA","AAA","AAA",
+                'A',Items.STRING.getDefaultInstance());
         ModHandler.addShapedRecipe("uninspected_plate", OreDictUnifier.get(OrePrefix.plate,RTMaterials.UNINSPECTED),
                 "h","X","X",
                 'X',new UnificationEntry(OrePrefix.gem,RTMaterials.UNINSPECTED));

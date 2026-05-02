@@ -84,8 +84,8 @@ public class RegistryEvents {
         MetaTileEntities.registerMetaTileEntity(id++, RTMetaTileEntities.DIRT_FURNACE);
         MetaTileEntities.registerMetaTileEntity(id++, MteHeater.SAMPLE);
         MetaTileEntities.registerMetaTileEntity(id++,RTMetaTileEntities.CRUCIBLE);
-        MetaTileEntities.registerMetaTileEntity(id++,RTMetaTileEntities.INFUSER);
-        MetaTileEntities.registerMetaTileEntity(id++,RTMetaTileEntities.PITIFUL_BOILER);
+        // MetaTileEntities.registerMetaTileEntity(id++,RTMetaTileEntities.INFUSER);
+        // MetaTileEntities.registerMetaTileEntity(id++,RTMetaTileEntities.PITIFUL_BOILER);
     }
 
     @SubscribeEvent

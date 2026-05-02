@@ -13,7 +13,6 @@ import twelvefold.twelvefoldbooter.api.LateMixinLoader;
 
 @Mod(modid = RTConstants.MODID, version = RTConstants.VERSION, name = RTConstants.NAME, dependencies = "required-after:twelvefoldbooter;required-after:gregtech;after:botania;")
 @SuppressWarnings("unused")
-@LateMixinLoader(value = "mixins.prrandomthings.late.json",shouldMixinConfigQueue = "shouldMixinConfigQueue")
 public class PRRandomThings {
 
     @SidedProxy(clientSide = "prrandomthings.proxy.ClientProxy", serverSide = "prrandomthings.proxy.CommonProxy")
@@ -26,9 +25,5 @@ public class PRRandomThings {
     public void preInit(FMLPreInitializationEvent event) {
         RegistryEvents.init();
         PRRandomThings.PROXY.preInit();
-    }
-    public static boolean shouldMixinConfigQueue(String mixinConfig)
-    {
-        return true;
     }
 }

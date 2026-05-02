@@ -12,6 +12,7 @@ public class RTConfig {
     public static int startMetaTileEntityID=11000;
     public static int startMaterialID=24000;
     public static boolean logItems=false;
+	public static boolean debugEnvironmentFactor=false;
     //@Config.Comment("Default: 5 min, set to negative to disable.")
     public static double jumpscareInterval=-1;
 
@@ -19,6 +20,8 @@ public class RTConfig {
     //public static boolean sandstoneDirtFurnace=false;
 	@Config.Comment("Average ticks for composting a dirt")
     public static int compostingSpeed=800;
+
+	public static boolean disableIronSmelting=false;
 	@Mod.EventBusSubscriber(modid = RTConstants.MODID)
 	private static class EventHandler{
 		@SubscribeEvent
@@ -28,4 +31,6 @@ public class RTConfig {
 			}
 		}
 	}
+
+
 }

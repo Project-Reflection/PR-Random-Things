@@ -39,7 +39,7 @@ public class PitifulBoilerRecipeLogic extends NoEnergyRecipeLogic {
         if (burnTime > 0) {
             --burnTime;
             if (this.getMetaTileEntity().getOffsetTimer() % 20 == 0) {
-                this.heat += deltaHeat*(getHeatPercentage() > 0.5f?2:1);
+                this.heat += deltaHeat*(getHeatPercentage() > 0.5f?2:1);//炉温超50%热量翻倍
             }
             if (this.heat > MAX_HEAT) {
                 this.metaTileEntity.doExplosion(4.0f);
@@ -55,7 +55,7 @@ public class PitifulBoilerRecipeLogic extends NoEnergyRecipeLogic {
     protected void updateRecipeProgress() {
         if (this.canRecipeProgress) {
             if (this.heat >= 100) {
-                int heatMultiplier= 1+ (int)(4*getHeatPercentage());
+                int heatMultiplier= 1+ (int)(4*getHeatPercentage());//炉温越高烧水越快
                 if (this.getMetaTileEntity().getOffsetTimer() % 20 == 1){//错开1tick
                     this.heat -= 5*heatMultiplier;
                 }

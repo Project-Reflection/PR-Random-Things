@@ -12,9 +12,11 @@ import java.util.Map;
 @IFMLLoadingPlugin.MCVersion("1.12.2")
 public class PRRandomThingsPlugin implements IFMLLoadingPlugin {
 
+	@SuppressWarnings("deprecated")
 	public PRRandomThingsPlugin() {
 		MixinBootstrap.init();
 		TwelvefoldRegistryAPI.enqueueEarlyMixin("mixins.prrandomthings.early.json");
+		TwelvefoldRegistryAPI.enqueueLateMixin("mixins.prrandomthings.late.json");
         RTConstants.minecraftHome=(File) FMLInjectionData.data()[6];
 	}
 

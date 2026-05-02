@@ -8,6 +8,7 @@ import gregtech.api.unification.material.Material;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.info.MaterialFlags;
 import gregtech.api.unification.material.info.MaterialIconSet;
+import gregtech.api.unification.material.properties.BlastProperty;
 import gregtech.api.unification.material.properties.PropertyKey;
 import gregtech.api.unification.material.properties.ToolProperty;
 import gregtech.api.unification.ore.OrePrefix;
@@ -163,11 +164,12 @@ public class RTMaterials {
                 .color(0xff00cc)
                 .components(MAGIC,1)
                 .iconSet(MaterialIconSet.DIAMOND)
-                .flags(MaterialFlags.NO_UNIFICATION,MaterialFlags.DISABLE_DECOMPOSITION)
+                .flags(MaterialFlags.DISABLE_DECOMPOSITION)
                 .build();
         LOW_QUALITY_STEAM=new Material.Builder(id++,RTConstants.RTID("low_quality_steam"))
                 .gas(new FluidBuilder().state(FluidState.GAS).temperature(373))
                 .components(Materials.Steam,1)
+                .flags(MaterialFlags.DISABLE_DECOMPOSITION)
                 .colorAverage()
                 .build();
     }
@@ -188,6 +190,28 @@ public class RTMaterials {
             ignore(OrePrefix.nugget,ELECTRICAL_STEEL);
             ignore(OrePrefix.ingot,ELECTRICAL_STEEL);
             ignore(OrePrefix.block,ELECTRICAL_STEEL);
+        }
+        if(RTConfig.disableIronSmelting) {
+            //disable direct smelting of iron
+            Materials.Iron.setProperty(PropertyKey.BLAST, new BlastProperty(1450));
+            Materials.WroughtIron.setProperty(PropertyKey.BLAST, new BlastProperty(1812));
+
+            for (Material m : new Material[]{
+                    Materials.BandedIron,
+                    Materials.GraniticMineralSand,
+                    Materials.BasalticMineralSand
+            }) {
+                m.getProperty(PropertyKey.ORE).setDirectSmeltResult(null);
+            }
+            Materials.BandedIron.getProperty(PropertyKey.ORE).setDirectSmeltResult(null);
+            for (Material m : new Material[]{
+                    Materials.YellowLimonite,
+                    Materials.BrownLimonite,
+                    Materials.Magnetite,
+                    Materials.Pyrite
+            }) {
+                m.getProperty(PropertyKey.ORE).setDirectSmeltResult(Materials.BandedIron);
+            }
         }
     }
     public static void onMaterialInfo()
