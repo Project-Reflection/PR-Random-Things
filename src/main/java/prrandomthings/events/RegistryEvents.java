@@ -22,6 +22,7 @@ import prrandomthings.config.RTConfig;
 import prrandomthings.enchantments.RTEnchantments;
 import prrandomthings.items.RTMetaItem;
 import prrandomthings.mte.multiblock.MteHeater;
+import prrandomthings.mte.multiblock.MteSteamPump;
 import prrandomthings.recipes.CraftingRecipes;
 import prrandomthings.recipes.ArsNouveauRecipes;
 import prrandomthings.recipes.MetallurgicRecipes;
@@ -86,6 +87,7 @@ public class RegistryEvents {
         MetaTileEntities.registerMetaTileEntity(id++,RTMetaTileEntities.CRUCIBLE);
         // MetaTileEntities.registerMetaTileEntity(id++,RTMetaTileEntities.INFUSER);
         // MetaTileEntities.registerMetaTileEntity(id++,RTMetaTileEntities.PITIFUL_BOILER);
+        MetaTileEntities.registerMetaTileEntity(id++, MteSteamPump.SAMPLE);
     }
 
     @SubscribeEvent

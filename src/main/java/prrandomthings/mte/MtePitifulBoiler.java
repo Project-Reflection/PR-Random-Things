@@ -2,10 +2,8 @@ package prrandomthings.mte;
 
 import gregtech.api.gui.ModularUI;
 import gregtech.api.gui.widgets.AdvancedTextWidget;
-import gregtech.api.gui.widgets.DynamicLabelWidget;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
-import gregtech.api.recipes.RecipeMap;
 import gregtech.client.renderer.ICubeRenderer;
 import gregtech.client.renderer.texture.Textures;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,8 +13,6 @@ import prrandomthings.constants.RTConstants;
 import prrandomthings.recipes.RTRecipeMaps;
 import prrandomthings.recipes.logic.NoEnergyRecipeLogic;
 import prrandomthings.recipes.logic.PitifulBoilerRecipeLogic;
-
-import java.util.Collections;
 
 public class MtePitifulBoiler extends MteCustomPrimitiveSingleblock {
     public static final MtePitifulBoiler SAMPLE = new MtePitifulBoiler(RTConstants.RTID("pitiful_boiler"),

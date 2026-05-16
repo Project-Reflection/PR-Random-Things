@@ -39,10 +39,16 @@ public class CraftingRecipes {
                 'A', new ItemStack(Items.BOWL),
                 'B', new UnificationEntry(OrePrefix.slab, Materials.Wood),
                 'C', OreDictNames.chestWood);
-        ModHandler.addShapedRecipe("sieve", RTMetaTileEntities.SIEVE.getStackForm(),
+        ModHandler.addShapedRecipe("sieve_plant_mesh", RTMetaTileEntities.SIEVE.getStackForm(),
                 "XAX", "XBX", "XCX",
                 'X', new UnificationEntry(OrePrefix.plank, Materials.Wood),
                 'A', RTMetaItem.PLANT_MESH,
+                'B', new UnificationEntry(OrePrefix.slab, Materials.Wood),
+                'C', OreDictNames.chestWood);
+        ModHandler.addShapedRecipe("sieve_string_mesh", RTMetaTileEntities.SIEVE.getStackForm(),
+                "XAX", "XBX", "XCX",
+                'X', new UnificationEntry(OrePrefix.plank, Materials.Wood),
+                'A', RTMetaItem.STRING_MESH,
                 'B', new UnificationEntry(OrePrefix.slab, Materials.Wood),
                 'C', OreDictNames.chestWood);
         ModHandler.addShapedRecipe("bricks_barrel", RTMetaTileEntities.BRICK_BARREL.getStackForm(),
