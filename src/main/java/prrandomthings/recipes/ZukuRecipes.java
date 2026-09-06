@@ -38,6 +38,15 @@ public class ZukuRecipes {
                 if (material.hasProperty(PropertyKey.BLAST)) {
                     BlastProperty property = material.getProperty(PropertyKey.BLAST);
                     int blastTemp = property.getBlastTemperature();
+                    duration = property.getDurationOverride();
+                    if (duration <= 0) {
+                        duration = Math.max(1, (int) (material.getMass() * (long) blastTemp / 50L));
+                    }
+
+                    EUt = property.getEUtOverride();
+                    if (EUt <= 0) {
+                        EUt = GTValues.VA[2];
+                    }
                     if (OrePrefix.ingotHot.doGenerateItem(material)) {
                         RTUtilities.removeRecipeWithOutput(RecipeMaps.VACUUM_RECIPES,
                                 itemStack -> OreDictUnifier.hasOreDictionary(itemStack,
@@ -63,15 +72,6 @@ public class ZukuRecipes {
                         }
                     } else {
                         BlastProperty.GasTier gasTier = property.getGasTier();
-                        duration = property.getDurationOverride();
-                        if (duration <= 0) {
-                            duration = Math.max(1, (int) (material.getMass() * (long) blastTemp / 50L));
-                        }
-
-                        EUt = property.getEUtOverride();
-                        if (EUt <= 0) {
-                            EUt = GTValues.VA[2];
-                        }
                         RTUtilities.removeRecipeWithOutput(RecipeMaps.BLAST_RECIPES,
                                 itemStack -> OreDictUnifier.hasOreDictionary(itemStack,
                                         new UnificationEntry(OrePrefix.ingot, material).toString()));
@@ -147,19 +147,19 @@ public class ZukuRecipes {
     }
 
     private static void addHandForgingRecipes(Material material) {
-        ModHandler.addShapedRecipe("zuku_ingot_"+material.getName(),
-                OreDictUnifier.get(RTOrePrefixes.INGOT_ZUKU,material),
+        ModHandler.addShapedRecipe("zuku_ingot_" + material.getName(),
+                OreDictUnifier.get(RTOrePrefixes.INGOT_ZUKU, material),
                 "hXX", " XX",
                 'X', new UnificationEntry(RTOrePrefixes.ZUKU, material)
         );
-        ModHandler.addShapedRecipe("sagegane_"+material.getName(),
-                OreDictUnifier.get(RTOrePrefixes.INGOT_SAGEGANE,material),
+        ModHandler.addShapedRecipe("sagegane_" + material.getName(),
+                OreDictUnifier.get(RTOrePrefixes.INGOT_SAGEGANE, material),
                 "hXX", " XX",
                 'X', new UnificationEntry(RTOrePrefixes.INGOT_ZUKU, material)
         );
-        ModHandler.addShapedRecipe("sagegane_to_ingot"+material.getName(),
-                OreDictUnifier.get(OrePrefix.ingot,material),
-                "h", "X","X",
+        ModHandler.addShapedRecipe("sagegane_to_ingot" + material.getName(),
+                OreDictUnifier.get(OrePrefix.ingot, material),
+                "h", "X", "X",
                 'X', new UnificationEntry(RTOrePrefixes.INGOT_SAGEGANE, material)
         );
     }
