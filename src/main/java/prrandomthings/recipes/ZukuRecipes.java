@@ -36,6 +36,7 @@ public class ZukuRecipes {
                 int EUt = 120;
                 int duration = 300;
                 if (material.hasProperty(PropertyKey.BLAST)) {
+
                     BlastProperty property = material.getProperty(PropertyKey.BLAST);
                     int blastTemp = property.getBlastTemperature();
                     duration = property.getDurationOverride();
@@ -68,6 +69,18 @@ public class ZukuRecipes {
                                     .fluidOutputs(new FluidStack[]{Materials.Helium.getFluid(250)})
                                     .duration(vacuumDuration)
                                     .EUt(vacuumEUt)
+                                    .buildAndRegister();
+                        }
+
+                        if(material == Materials.Silicon || material == Materials.Kanthal){
+                            RTUtilities.removeRecipeWithOutput(RecipeMaps.CHEMICAL_BATH_RECIPES,
+                                    itemStack -> OreDictUnifier.hasOreDictionary(itemStack,
+                                            new UnificationEntry(OrePrefix.ingot, material).toString()));
+                            RecipeMaps.CHEMICAL_BATH_RECIPES.recipeBuilder()
+                                    .input(OrePrefix.ingotHot,material)
+                                    .output(RTOrePrefixes.ZUKU,material,2)
+                                    .EUt(120)
+                                    .duration(400)
                                     .buildAndRegister();
                         }
                     } else {
@@ -119,6 +132,7 @@ public class ZukuRecipes {
                             itemStack -> OreDictUnifier.hasOreDictionary(itemStack,
                                     new UnificationEntry(OrePrefix.ingot, material).toString()));
                     addHandForgingRecipes(material);
+                    addPBFRecipes(material);
                 }
                 addForgingRecipes(material, EUt / 4, Math.max(duration, 300));
             }
@@ -163,7 +177,26 @@ public class ZukuRecipes {
                 'X', new UnificationEntry(RTOrePrefixes.INGOT_SAGEGANE, material)
         );
     }
-
+    private static void addPBFRecipes(Material material){
+        RecipeMaps.PRIMITIVE_BLAST_FURNACE_RECIPES.recipeBuilder()
+                .input(OrePrefix.dust, material)
+                .input(OrePrefix.dust, Materials.Coal,4)
+                .output(RTOrePrefixes.ZUKU, material, 4)
+                .duration(720)
+                .buildAndRegister();
+        RecipeMaps.PRIMITIVE_BLAST_FURNACE_RECIPES.recipeBuilder()
+                .input(OrePrefix.dust, material)
+                .input(OrePrefix.dust, Materials.Charcoal,4)
+                .output(RTOrePrefixes.ZUKU, material, 4)
+                .duration(720)
+                .buildAndRegister();
+        RecipeMaps.PRIMITIVE_BLAST_FURNACE_RECIPES.recipeBuilder()
+                .input(OrePrefix.dust, material)
+                .input(OrePrefix.dust, Materials.Coke,2)
+                .output(RTOrePrefixes.ZUKU, material, 4)
+                .duration(360)
+                .buildAndRegister();
+    }
     private static void replaceFurnaceRecipes(Material material) {
         ItemStack ingot = OreDictUnifier.get(OrePrefix.ingot, material);
         ItemStack zuku = OreDictUnifier.get(RTOrePrefixes.ZUKU, material);
