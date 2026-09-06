@@ -71,6 +71,7 @@ public class MteCustomPrimitiveSingleblock extends MetaTileEntity implements IGh
     protected NoEnergyRecipeLogic initializeRecipeLogic(){
         return new NoEnergyRecipeLogic(this,recipeMap);
     }
+
     protected void initializeAbilities() {
         this.importItems = new NotifiableItemStackHandler(this, this.recipeMap.getMaxInputs(), this,
                 false);

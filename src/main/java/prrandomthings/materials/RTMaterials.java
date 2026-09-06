@@ -9,6 +9,7 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.info.MaterialFlags;
 import gregtech.api.unification.material.info.MaterialIconSet;
 import gregtech.api.unification.material.properties.BlastProperty;
+import gregtech.api.unification.material.properties.PolymerProperty;
 import gregtech.api.unification.material.properties.PropertyKey;
 import gregtech.api.unification.material.properties.ToolProperty;
 import gregtech.api.unification.ore.OrePrefix;
@@ -44,6 +45,7 @@ public class RTMaterials {
     public static Material ELVEN_ELEMENTIUM;
     public static Material SOURCE;
     public static Material LOW_QUALITY_STEAM;
+    public static Material ALCHEMICAL_OIL;
 
     public static void register() {
         int id= RTConfig.startMaterialID;
@@ -172,9 +174,16 @@ public class RTMaterials {
                 .flags(MaterialFlags.DISABLE_DECOMPOSITION)
                 .colorAverage()
                 .build();
+        ALCHEMICAL_OIL=new Material.Builder(id++,RTConstants.RTID("alchemical_oil"))
+                .liquid()
+                .components(Materials.Carbon,1,Materials.Hydrogen,2)
+                .flags(MaterialFlags.DISABLE_DECOMPOSITION)
+                .colorAverage()
+                .build();
     }
     public static void postRegister()
     {
+        Materials.PolyvinylButyral.setProperty(PropertyKey.POLYMER,new PolymerProperty());
         if(RTConfig.enableExtraFlintTools) {
             Materials.Flint.addFlags(MaterialFlags.GENERATE_BOLT_SCREW, MaterialFlags.GENERATE_ROD);
             Materials.Flint.getProperty(PropertyKey.TOOL)

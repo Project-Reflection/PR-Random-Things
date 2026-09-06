@@ -42,6 +42,10 @@ public class RTRecipeMaps {
 
     public static final RecipeMap<PrimitiveRecipeBuilder> INFUSER=new RecipeMap<>("infuser",
             1,1,1,0,new PrimitiveRecipeBuilder(),false);
-    public static final RecipeMap<PrimitiveRecipeBuilder> PITIFUL_BOILER=new RecipeMap<>("pitiful_boiler",
-            1,1,1,1,new PrimitiveRecipeBuilder(),false);
+    public static final RecipeMap<SimpleRecipeBuilder> PITIFUL_COMPRESSOR=new RecipeMap<>(
+            "pitiful_compressor", 2,1,0,0,
+            new SimpleRecipeBuilder(),false);
+    public static final RecipeMap<SimpleRecipeBuilder> ALCHEMIZER=new BigRecipeMap<>(
+            "alchemizer", 6,1,3,1,
+            new SimpleRecipeBuilder(),false);
 }

@@ -4,14 +4,13 @@ import gregtech.api.GTValues;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
 import gregtech.api.pattern.FactoryBlockPattern;
+import gregtech.api.recipes.RecipeMaps;
 import gregtech.client.renderer.texture.Textures;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import prrandomthings.api.PRMultiblockAbility;
 import prrandomthings.constants.RTConstants;
 import prrandomthings.constants.RTTextures;
-import prrandomthings.materials.RTMaterials;
-import prrandomthings.mte.magic.MteLiquidFuelSingleblock;
 import prrandomthings.mte.multiblock.MteThermalMultiblock;
 import prrandomthings.recipes.RTRecipeMaps;
 
@@ -67,12 +66,8 @@ public class RTMetaTileEntities {
         }
 
     }
-
-    public static final MetaTileEntity INFUSER = new MteLiquidFuelSingleblock(RTConstants.RTID("infuser"),
-            RTRecipeMaps.INFUSER,
-            RTTextures.WOODEN_PLANKS,
-            Textures.MASS_FABRICATOR_OVERLAY,
-            RTMaterials.SOURCE.getFluid(10), true,true
-    );
-    public static final MetaTileEntity PITIFUL_BOILER=MtePitifulBoiler.SAMPLE;
+    public static final MetaTileEntity PITIFUL_COMPRESSOR =new MteCustomSteam(new ResourceLocation(RTConstants.MODID,
+            "pitiful_compressor"), RTRecipeMaps.PITIFUL_COMPRESSOR,Textures.COMPRESSOR_OVERLAY,false);
+    public static final MetaTileEntity ALCHEMIZER =new MteCustomSteam(new ResourceLocation(RTConstants.MODID,
+            "alchemizer"), RTRecipeMaps.ALCHEMIZER,Textures.CHEMICAL_REACTOR_OVERLAY,false);
 }

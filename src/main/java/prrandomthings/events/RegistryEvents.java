@@ -21,12 +21,10 @@ import prrandomthings.constants.RTConstants;
 import prrandomthings.config.RTConfig;
 import prrandomthings.enchantments.RTEnchantments;
 import prrandomthings.items.RTMetaItem;
+import prrandomthings.materials.RTOrePrefixes;
 import prrandomthings.mte.multiblock.MteHeater;
 import prrandomthings.mte.multiblock.MteSteamPump;
-import prrandomthings.recipes.CraftingRecipes;
-import prrandomthings.recipes.ArsNouveauRecipes;
-import prrandomthings.recipes.MetallurgicRecipes;
-import prrandomthings.recipes.PrimitiveRecipes;
+import prrandomthings.recipes.*;
 import prrandomthings.materials.RTMaterials;
 import prrandomthings.mte.RTMetaTileEntities;
 
@@ -49,6 +47,7 @@ public class RegistryEvents {
     @SubscribeEvent
     public static void registerRecipeEvent(RegistryEvent.Register<IRecipe> event) {
         PrimitiveRecipes.register();
+        SteamRecipes.register();
         MetallurgicRecipes.register();
         ArsNouveauRecipes.register();
         CraftingRecipes.registerCraftingRecipes();
@@ -62,6 +61,10 @@ public class RegistryEvents {
                 .buildAndRegister();
     }
 
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void postRegisterRecipe(RegistryEvent.Register<IRecipe> event){
+        ZukuRecipes.generateZukuRecipes();
+    }
     @SubscribeEvent
     public static void registerPotionEvent(RegistryEvent.Register<Potion> event) {
     }
@@ -85,14 +88,15 @@ public class RegistryEvents {
         MetaTileEntities.registerMetaTileEntity(id++, RTMetaTileEntities.DIRT_FURNACE);
         MetaTileEntities.registerMetaTileEntity(id++, MteHeater.SAMPLE);
         MetaTileEntities.registerMetaTileEntity(id++,RTMetaTileEntities.CRUCIBLE);
-        // MetaTileEntities.registerMetaTileEntity(id++,RTMetaTileEntities.INFUSER);
-        // MetaTileEntities.registerMetaTileEntity(id++,RTMetaTileEntities.PITIFUL_BOILER);
         MetaTileEntities.registerMetaTileEntity(id++, MteSteamPump.SAMPLE);
+        MetaTileEntities.registerMetaTileEntity(id++, RTMetaTileEntities.PITIFUL_COMPRESSOR);
+        MetaTileEntities.registerMetaTileEntity(id++, RTMetaTileEntities.ALCHEMIZER);
     }
 
     @SubscribeEvent
     public static void registerMaterials(MaterialEvent event) {
         RTConstants.LOGGER.info("Registering materials");
+        RTOrePrefixes.addToMetaItem();
         RTMaterials.register();
     }
     @SubscribeEvent

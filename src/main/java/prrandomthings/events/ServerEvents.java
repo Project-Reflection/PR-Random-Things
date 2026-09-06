@@ -1,9 +1,13 @@
 package prrandomthings.events;
 
+import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.ore.OrePrefix;
 import net.minecraft.block.BlockDoublePlant;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -16,6 +20,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -37,6 +42,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 @Mod.EventBusSubscriber(modid = RTConstants.MODID)
 public class ServerEvents {
@@ -148,6 +155,7 @@ public class ServerEvents {
     }
     @SubscribeEvent
     public static void onItemPickup(EntityItemPickupEvent event) {
+        /*
         var player = event.getEntityPlayer();
         if (player.world.isRemote) {
             return;
@@ -160,6 +168,17 @@ public class ServerEvents {
                 entityItem.getItem().getCount()))
         {
             event.setCanceled(true);
+        }*/
+    }
+    @SubscribeEvent
+    public static void onLivingDrops(LivingDropsEvent event){
+        if(event.getEntityLiving().world.isRemote || event.getEntityLiving() instanceof EntityPlayer){
+            return;
+        }
+        for(var item:event.getDrops()){
+            if(OreDictUnifier.hasOreDictionary(item.getItem(),"oreGold")){
+                item.setItem(OreDictUnifier.get(OrePrefix.ore, Materials.Chalcopyrite,item.getItem().getCount()));
+            }
         }
     }
 }

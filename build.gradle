@@ -93,6 +93,7 @@ dependencies {
     implementation rfg.deobf('maven.modrinth:gregtech-ce-unofficial:2.8.10-beta')
 
     implementation rfg.deobf("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.698")
+    implementation rfg.deobf("maven.modrinth:ae2uel-extra:v1.0.5")
 
 //    implementation("org.mongodb:mongo-java-driver:3.2.2")
 //    shadow ("org.mongodb:mongo-java-driver:3.2.2")

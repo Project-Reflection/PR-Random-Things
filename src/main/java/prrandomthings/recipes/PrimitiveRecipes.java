@@ -8,6 +8,7 @@ import gregtech.api.recipes.chance.output.impl.ChancedItemOutput;
 import gregtech.api.recipes.ingredients.GTRecipeInput;
 import gregtech.api.recipes.ingredients.GTRecipeItemInput;
 import gregtech.api.recipes.ingredients.GTRecipeOreInput;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Material;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.info.MaterialFlags;
@@ -25,9 +26,12 @@ import prrandomthings.config.RTConfig;
 import prrandomthings.constants.RTConstants;
 import prrandomthings.items.RTMetaItem;
 import prrandomthings.materials.RTMaterials;
+import prrandomthings.materials.RTOrePrefixes;
 import prrandomthings.utils.RTUtilities;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -63,7 +67,7 @@ public final class PrimitiveRecipes {
     public static void register() {
         RTUtilities.clearRecipeMap(PBF_RECIPES);
         PBF_RECIPES.recipeBuilder()
-                .output(OrePrefix.ingot, Materials.Steel, 1)
+                .output(RTOrePrefixes.ZUKU, Materials.Steel, 4)
                 .output(OrePrefix.gem, RTMaterials.SLAG, 1)
                 .input("ingotWroughtIron", 1)
                 .input("dustCalcite", 1)
@@ -71,14 +75,15 @@ public final class PrimitiveRecipes {
                 .duration(20 * 60 * 6)
                 .buildAndRegister();
         PBF_RECIPES.recipeBuilder()
-                .output(OrePrefix.ingot, Materials.WroughtIron, 8)
+                .output(RTOrePrefixes.ZUKU, Materials.WroughtIron, 30)
+                .chancedOutput(RTOrePrefixes.ZUKU, Materials.Steel, 2,5000,0)
                 .input("ingotIron", 8)
                 .input("gemCharcoal", 1)
                 .duration(20 * 10 * 8)
                 .buildAndRegister();
         //3Fe + 3SiO2 = FeSi + 2FeSiO3
         PBF_RECIPES.recipeBuilder()
-                .output(OrePrefix.ingot, RTMaterials.ELECTRICAL_STEEL, 2)
+                .output(RTOrePrefixes.ZUKU, RTMaterials.ELECTRICAL_STEEL, 8)
                 .output(OrePrefix.gem, RTMaterials.FERROUS_SLAG, 12)
                 .input("ingotSteel", 3)
                 .input("dustSiliconDioxide", 9)
@@ -87,7 +92,7 @@ public final class PrimitiveRecipes {
                 .buildAndRegister();
         //5Cu + 3SiO2 = CuSi + 2Cu2SiO3
         PBF_RECIPES.recipeBuilder()
-                .output(OrePrefix.ingot, RTMaterials.SILICON_BRONZE, 2)
+                .output(RTOrePrefixes.ZUKU, RTMaterials.SILICON_BRONZE, 8)
                 .output(OrePrefix.gem, RTMaterials.CUPROUS_SLAG, 14)
                 .input("ingotCopper", 5)
                 .input("dustSiliconDioxide", 9)
@@ -159,6 +164,9 @@ public final class PrimitiveRecipes {
                             new ChancedItemOutput(new ItemStack(Items.BEETROOT_SEEDS), 1000, 0),
                             new ChancedItemOutput(new ItemStack(Items.MELON_SEEDS), 1000, 0),
                             new ChancedItemOutput(new ItemStack(Items.PUMPKIN_SEEDS), 1000, 0)
+                    ))
+                    .chancedOutputs(Collections.singletonList(
+                            new ChancedItemOutput(new ItemStack(Items.REEDS), 1000, 0)
                     ))
                     .input(Blocks.DIRT, 1)
                     .input(new GTRecipeItemInput(mesh).setNonConsumable())
@@ -237,7 +245,7 @@ public final class PrimitiveRecipes {
         //endregion
 
         for (Material mat : GregTechAPI.materialManager.getRegisteredMaterials()) {
-            if(mat.hasFlag(MaterialFlags.NO_UNIFICATION)){
+            if (mat.hasFlag(MaterialFlags.NO_UNIFICATION)) {
                 continue;
             }
             if (mat.hasFluid() && mat.getBlastTemperature() <= 0) {
@@ -249,78 +257,49 @@ public final class PrimitiveRecipes {
                             .duration(20 * 10)
                             .buildAndRegister();
                     ROCK_RECIPES.recipeBuilder()
-                            .fluidInputs(mat.getFluid(144),Materials.Water.getFluid(1))
-                            .fluidOutputs(Materials.Steam.getFluid(160))
-                            .output(OrePrefix.dust,mat)
-                            .duration(20*20)
-                            .buildAndRegister();
-                }
-                if (mat.hasProperty(PropertyKey.ORE)) {
-                    OreProperty property=mat.getProperty(PropertyKey.ORE);
-                    RTRecipeMaps.CRUCIBLE.recipeBuilder()
-                            .input(OrePrefix.ore, mat)
-                            .fluidOutputs(mat.getFluid(288*property.getOreMultiplier()))
+                            .fluidInputs(mat.getFluid(144), Materials.Water.getFluid(1))
+                            .fluidOutputs(RTMaterials.LOW_QUALITY_STEAM.getFluid(320))
+                            .output(OrePrefix.dust, mat)
                             .duration(20 * 20)
                             .buildAndRegister();
                 }
+                if (mat.hasProperty(PropertyKey.ORE)) {
+                    OreProperty property = mat.getProperty(PropertyKey.ORE);
+                    var recipeBuilder = RTRecipeMaps.CRUCIBLE.recipeBuilder()
+                            .input(OrePrefix.ore, mat)
+                            .fluidOutputs(mat.getFluid(288 * property.getOreMultiplier()))
+                            .duration(20 * 20);
+                    int fluidLimit = 1;
+                    int dustLimit = 4;
+                    for (var byproduct : property.getOreByProducts()) {
+                        if (fluidLimit > 0 && byproduct.hasFluid()) {
+                            recipeBuilder = recipeBuilder.fluidOutputs(byproduct.getFluid(72 * property.getByProductMultiplier()));
+                            fluidLimit--;
+                        } else if (dustLimit > 0 && byproduct.hasProperty(PropertyKey.DUST)) {
+                            recipeBuilder = recipeBuilder.chancedOutput(OrePrefix.dust, byproduct, property.getByProductMultiplier(), 1000 * dustLimit, 0);
+                            dustLimit--;
+                        }
+                    }
+                    recipeBuilder.buildAndRegister();
+                }
             }
             if (mat.hasProperty(PropertyKey.ORE)) {
-                OreProperty property=mat.getProperty(PropertyKey.ORE);
+                OreProperty property = mat.getProperty(PropertyKey.ORE);
                 ROCK_RECIPES.recipeBuilder()
                         .output(OrePrefix.ore, mat)
                         .input(OrePrefix.dust, mat, property.getOreMultiplier())
                         .input(OrePrefix.dust, Materials.Flint,
-                                8*Math.max(property.getOreMultiplier(),property.getByProductMultiplier()))
+                                8 * Math.max(property.getOreMultiplier(), property.getByProductMultiplier()))
                         .fluidInputs(RTMaterials.UNINSPECTED.getFluid(1))
                         .circuitMeta(1)
-                        .duration(20 * 10*Math.max(property.getOreMultiplier(),property.getByProductMultiplier()))
+                        .duration(20 * 10 * Math.max(property.getOreMultiplier(), property.getByProductMultiplier()))
                         .buildAndRegister();
             }
         }
-        ROCK_RECIPES.recipeBuilder()
-                .fluidInputs(RTMaterials.UNINSPECTED.getFluid(1))
-                .input(OrePrefix.dust, Materials.Iron, 1)
-                .input(OrePrefix.dust, Materials.Flint, 8)
-                .circuitMeta(2)
-                .output(OrePrefix.ore, Materials.Chalcopyrite)
-                .duration(20 * 10)
-                .buildAndRegister();
-        ROCK_RECIPES.recipeBuilder()
-                .fluidInputs(RTMaterials.UNINSPECTED.getFluid(1))
-                .input(OrePrefix.dust, Materials.Iron, 1)
-                .input(OrePrefix.dust, Materials.Flint, 8)
-                .circuitMeta(3)
-                .output(OrePrefix.ore, Materials.Tin)
-                .duration(20 * 10)
-                .buildAndRegister();
-        ROCK_RECIPES.recipeBuilder()
-                .fluidInputs(RTMaterials.UNINSPECTED.getFluid(1))
-                .input(OrePrefix.dust, Materials.Gold, 1)
-                .input(OrePrefix.dust, Materials.Flint, 8)
-                .circuitMeta(2)
-                .output(OrePrefix.ore, Materials.Galena)
-                .duration(20 * 10)
-                .buildAndRegister();
-        ROCK_RECIPES.recipeBuilder()
-                .fluidInputs(RTMaterials.UNINSPECTED.getFluid(1))
-                .input(OrePrefix.dust, Materials.Gold, 1)
-                .input(OrePrefix.dust, Materials.Flint, 8)
-                .circuitMeta(3)
-                .output(OrePrefix.ore, Materials.Bauxite)
-                .duration(20 * 10)
-                .buildAndRegister();
-        ROCK_RECIPES.recipeBuilder()
-                .fluidInputs(RTMaterials.UNINSPECTED.getFluid(1))
-                .input(OrePrefix.dust, Materials.Gold, 2)
-                .input(OrePrefix.dust, Materials.Flint, 16)
-                .circuitMeta(4)
-                .output(OrePrefix.ore, Materials.Pentlandite)
-                .duration(20 * 10)
-                .buildAndRegister();
 
         ROCK_RECIPES.recipeBuilder()
                 .fluidInputs(Materials.Lava.getFluid(1000))
-                .input(OrePrefix.dust,Materials.Redstone)
+                .input(OrePrefix.dust, Materials.Redstone)
                 .output(Blocks.NETHERRACK)
                 .duration(20)
                 .buildAndRegister();
@@ -354,11 +333,14 @@ public final class PrimitiveRecipes {
                 .duration(20 * 20)
                 .buildAndRegister();
 
-        RTRecipeMaps.PITIFUL_BOILER.recipeBuilder()
-                .fluidInputs(Materials.Water.getFluid(1))
-                .fluidOutputs(RTMaterials.LOW_QUALITY_STEAM.getFluid(320))
-                .duration(320)
+        RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
+                .input(Blocks.SAND)
+                .output(OrePrefix.dust, Materials.QuartzSand)
+                .duration(Integer.MAX_VALUE)
+                .EUt(32)
                 .buildAndRegister();
+
+
     }
 
 }

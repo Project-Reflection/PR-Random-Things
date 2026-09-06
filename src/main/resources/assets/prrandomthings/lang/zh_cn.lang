@@ -22,3 +22,7 @@ prrandomthings.material.terrasteel=泰拉钢
 prrandomthings.material.elven_elementium=精灵源质钢
 prrandomthings.material.source=魔源
 prrandomthings.material.low_quality_steam=低质蒸汽
+
+item.material.oreprefix.zuku=碎生%s
+item.material.oreprefix.ingotZuku=生%s锭
+item.material.oreprefix.ingotSagegane=左下%s
