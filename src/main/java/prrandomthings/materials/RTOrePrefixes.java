@@ -13,7 +13,7 @@ public class RTOrePrefixes {
         if(!material.hasProperty(PropertyKey.INGOT) || material.hasProperty(PropertyKey.POLYMER)){
             return false;
         }
-        return !material.hasFlag(MaterialFlags.DECOMPOSITION_BY_ELECTROLYZING);
+        return !material.hasAnyOfFlags(MaterialFlags.DECOMPOSITION_BY_ELECTROLYZING,MaterialFlags.IS_MAGNETIC);
     }
     public static OrePrefix ZUKU = new OrePrefix("zuku", GTValues.M / 32,
             null, new MaterialIconType("zuku"), OrePrefix.Flags.ENABLE_UNIFICATION, RTOrePrefixes::generateZuku);
